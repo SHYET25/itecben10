@@ -20,14 +20,40 @@
         background-position: calc(100%) top;
         background-repeat: no-repeat;
         background-size: 100% 100%;
-        flex-direction: column;
+        display: flex;
         height: 100vh;
+    }
+    .text-container {
+        margin-top: 10vh;
+        margin-left: 5vh;
+        color: #ffffff;
+    }
+    .text-container2{
+        margin-top: 10vh;
+
+        color: #ffffff; 
     }
 </style>
 <body>
     <div class="row">
-
+        <div class="col-md-6 d-flex">
+            <div class="text-container">
+                <h1>Joseph Edirck</h1>
+                <div class="text-container2">
+                    <h2>Began:</h2>
+                    <h2>Injury History:</h2>
+                    <h2>Hiehgt:</h2>
+                    <h2>Wight:</h2>
+                    <h2>Age:</h2>
+                </div>
+                <div class="text-container2">
+                    <h1>Performance Matrics</h1>
+                </div>
+            </div>    
+        </div>
+        <div class="col-md-6 d-flex">
+            <img src="images/profile.png" alt="">
+        </div>
     </div>
-    
 </body>
 </html>
