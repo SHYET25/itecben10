@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/bootstrap.bundle.min.js"></script>
+</head>
+<style>
+    body {
+        background-color: #040E20;
+        margin: 0;
+        overflow: hidden;
+        font-family: "Play";
+    }
+    .parallelogram-top {
+        display: flex;
+        height: 25vh;
+        background-color: #040E20;
+        clip-path: polygon(0% 0%, 100% 0%, 75% 100%, 0% 100%);
+    }
+
+    .parallelogram-mid {
+        background: #040E20;
+        clip-path: polygon(0 0, 75% 0, 100% 100%, 0 100%);
+        height: 50vh;
+        display: flex;
+        margin-top: -1px;
+        width: 100%;
+    }
+
+    .parallelogram-bottom {
+        display: flex;
+        height: 25vh;
+        background-color: #040E20;
+        clip-path: polygon(0% 0%, 100% 0%, 85% 100%, 0% 100%);
+        margin-top: -1px;
+    }
+
+    .main-wrapper {
+        background-image: url('images/bg.png');
+        background-position: calc(100% - -100px) top;
+        background-repeat: no-repeat;
+        background-size: 85% 100%;
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        z-index: -1000;
+    }
+
+    .text {
+        color: #0740AE;
+        font-family: "Play";
+        font-weight: bold;
+        font-size: 5vw;
+        margin: 0;
+    }
+    
+    .text2 {
+        color: #ffffff;
+    }
+
+    .text3 {
+        color: #ffffff;
+        font-size: 1vw;
+        margin-top: 5vh;
+        font-weight: bold;
+    }
+
+    .text3 a {
+        text-decoration: none;
+    }
+    
+    .text-container {
+        padding-left: 5vw;
+        margin-top: -80vh;
+        position: relative;
+        z-index: 1;
+        font-weight: bold;
+    }
+
+    .cont {
+        margin-top: -100vh;
+        z-index: -500;
+    }
+
+    .lbtn {
+        font-size: 1.5vw;
+        border-radius: 2vw;
+        height: 7vh;
+        width: 15vw;
+        background-color: #0AC438;
+        font-weight: bold;
+        font-family: "Play";
+        margin-top: 2vh;
+    }
+
+    .form-control {
+        width: 25vw;
+    }
+    
+
+    @media only screen and (max-width: 700px) {
+        body {
+            background-color: #040E20;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+            background-image: url('images/bg.png');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .content {
+            font-family: "Play";
+            font-weight: bold;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            width: 100%;
+        }
+
+        .text {
+            margin-top: 45vh;
+            font-size: 10vw;
+            margin-bottom: 2vh;
+            color: #ffffff;
+        }
+
+        .text2 {
+            color: #ffffff;
+            font-size: 7vw;
+        }
+
+        .text3 {
+            color: #ffffff;
+            font-size: 3vw;
+            margin-top: 5vh;
+            font-weight: bold;
+        }
+
+        .lbtn {
+            font-size: 4vw;
+            border-radius: 4vw;
+            width: 40vw;
+            background-color: #0AC438;
+            font-weight: bold;
+            font-family: "Play";
+            margin-top: 2vh;
+        }
+
+        .form-control {
+            width: 90vw;
+            margin-left: -15px;
+        }
+    }
+</style>
+<body>
+    <div class="row">
+        <div class="main-wrapper">
+        </div>
+    </div>
+    <div class="cont">
+        <div class="row">
+          <div class="col-sm-5">
+                <div class="d-flex parallelogram-top"></div>
+                  <div class="parallelogram-mid d-flex align-items-center"></div>
+                <div class="d-flex parallelogram-bottom"></div>
+            </div>
+        </div>
+    </div>
+    <div class="text-container content">
+        <h1 class="mb-4 text">Login</h1>
+        <h1 class="mb-4 text2">Welcome!</h1>
+        <form id="loginForm" action="phpFile/buttonFunction/logInButton.php" method="POST">
+        <div class="form-floating mb-3">
+            <input type="email" name="email" class="form-control" id="email" placeholder="name@example.com" required>
+            <div class="invalid-feedback">Please enter a valid Email Address.</div>
+            <label for="floatingInput">Email address</label>
+            
+        </div>
+            <div class="form-floating">
+                <input type="password" name="password" class="form-control" id="password" placeholder="Password" required>
+                <div class="invalid-feedback">Please enter a valid Email Address.</div>
+                <label for="floatingPassword">Password</label>
+            </div>
+        <div>
+            <button  type="button" id="loginButton" class="btn btn-success btn-sm lbtn">Login</button>
+
+        </div>
+        </form>
+        <h3 class="text3">Don't have an account? <a href="sign-up.html" class="login">Create Account</a></h3>
+    </div>
+    
+
+
+    <div class="modal fade" id="insertionConfirmed" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        <div class="modal-header" style="background-color: green;">
+            <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
+            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
+            </button>
+        </div>
+        <div class="modal-body">
+            
+        </div>
+        </div>
+    </div>
+    </div>
+
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"  crossorigin="anonymous"></script>
+      <script src="jsFunctions/loginJS.js"></script>
+</body>
+</html>

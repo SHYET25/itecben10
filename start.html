@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/bootstrap.bundle.min.js"></script>
+</head>
+<style>
+    body {
+        background-color: #040E20;
+        margin: 0;
+        overflow: hidden;
+    }
+    .parallelogram-top {
+        display: flex;
+        height: 25vh;
+        background-color: #040E20;
+        clip-path: polygon(0% 0%, 100% 0%, 75% 100%, 0% 100%);
+    }
+
+    .parallelogram-mid {
+        background: #040E20;
+        clip-path: polygon(0 0, 75% 0, 100% 100%, 0 100%);
+        height: 50vh;
+        display: flex;
+        margin-top: -1px;
+        width: 100%;
+    }
+
+    .parallelogram-bottom {
+        display: flex;
+        height: 25vh;
+        background-color: #040E20;
+        clip-path: polygon(0% 0%, 100% 0%, 85% 100%, 0% 100%);
+        margin-top: -1px;
+    }
+
+    .main-wrapper {
+        background-image: url('images/bg.png');
+        background-position: calc(100% - -100px) top;
+        background-repeat: no-repeat;
+        background-size: 85% 100%;
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        z-index: -1000;
+    }
+
+    .text {
+        color: #0740AE;
+        font-family: "Play";
+        font-weight: bold;
+        font-size: 4vw;
+        margin: 0;
+    }
+    
+    .text-container {
+        padding-left: 5vw;
+        margin-top: -73vh;
+        position: relative;
+        z-index: 1;
+    }
+
+    .cont {
+        margin-top: -100vh;
+        z-index: -500;
+    }
+
+    .btn {
+        font-size: 2vw;
+        border-radius: 2vw;
+        width: 15vw;
+        height: 7vh;
+        background-color: #0AC438;
+        font-weight: bold;
+        font-family: "Play";
+        margin-top: 2vh;
+    }
+
+    @media only screen and (max-width: 700px) {
+        body {
+            background-color: #040E20;
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+            background-image: url('images/bg.png');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .content {
+            color: #0740AE;
+            font-family: "Play";
+            font-weight: bold;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            width: 100%;
+        }
+
+        .content h1 {
+            margin-top: 40vh;
+            font-size: 8vw;
+            margin-bottom: 2vh;
+            color: #ffffff;
+        }
+
+        .btn {
+            font-size: 4vw;
+            border-radius: 4vw;
+            width: 40vw;
+            background-color: #0AC438;
+            font-weight: bold;
+            font-family: "Play";
+            margin-top: 2vh;
+        }
+    }
+</style>
+<body>
+    <div class="row">
+        <div class="main-wrapper">
+        </div>
+    </div>
+    <div class="cont">
+        <div class="row">
+          <div class="col-sm-5">
+                <div class="d-flex parallelogram-top"></div>
+                  <div class="parallelogram-mid d-flex align-items-center"></div>
+                <div class="d-flex parallelogram-bottom"></div>
+            </div>
+        </div>
+    </div>
+    <div class="text-container content">
+        <h1 class="mb-4 text">Sports <br> Management <br> System</h1>
+        <div>
+            <a href="login.html" style="text-decoration: none; color: #ffffff;"><button class="btn btn-success btn-sm">Start</button></a>
+        </div>
+    </div>
+</body>
+</html>

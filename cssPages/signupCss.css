@@ -1,0 +1,167 @@
+
+body {
+    background-color: #040E20;
+    margin: 0;
+    overflow: hidden;
+}
+
+* {
+    font-family: "Play";
+}
+.parallelogram-top {
+    display: flex;
+    height: 25vh;
+    background-color: #040E20;
+    clip-path: polygon(0% 0%, 100% 0%, 75% 100%, 0% 100%);
+}
+
+.parallelogram-mid {
+    background: #040E20;
+    clip-path: polygon(0 0, 75% 0, 100% 100%, 0 100%);
+    height: 50vh;
+    display: flex;
+    margin-top: -1px;
+    width: 100%;
+}
+
+.parallelogram-bottom {
+    display: flex;
+    height: 25vh;
+    background-color: #040E20;
+    clip-path: polygon(0% 0%, 100% 0%, 85% 100%, 0% 100%);
+    margin-top: -1px;
+}
+
+.main-wrapper {
+    background-image: url('images/bg.png');
+    background-position: calc(100% - -100px) top;
+    background-repeat: no-repeat;
+    background-size: 85% 100%;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    z-index: -1000;
+}
+
+.text {
+    color: #0740AE;
+    font-family: "Play";
+    font-weight: bold;
+    font-size: 4vw;
+    margin: 0;
+}
+
+.text2 {
+    color: #ffffff;
+    font-family: "Play";
+    font-size: 2.5vw;
+    margin-top: 5vh;
+}
+
+.text3 {
+    color: #ffffff;
+    font-family: "Play";
+    font-weight: bold;
+    font-size: 1vw;
+    margin-top: 5vh;
+}
+
+.text3 a {
+    text-decoration: none;
+}
+
+.text-container {
+    padding-left: 6vw;
+    margin-top: -80vh;
+    position: relative;
+    z-index: 1;
+}
+
+.cbtn {
+    font-size: 2vw;
+    border-radius: 2vw;
+    width: 10vw;
+    background-color: #ffffff;
+    font-weight: bold;
+    font-family: "Play";
+    margin-top: 2vh;
+    color: #040E20;
+}
+
+.icon {
+    height: 8vw;
+    width: 8vw;
+}
+
+.cont {
+    margin-top: -100vh;
+    z-index: -500;
+}
+
+.custom-modal-width {
+    max-width: 700px;
+    margin-left: calc(50% + -50px); 
+}
+
+.cbtn2 {
+    width: 30%;
+}
+
+@media only screen and (max-width: 700px) {
+
+    body {
+        background-color: #040E20;
+        margin: 0;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        width: 100vw;
+        background-image: url('images/bg.png');
+        background-size: cover;
+        background-position: center;
+    }
+
+    * {
+    font-family: "Play";
+    }
+    
+    .content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        height: 100%;
+        width: 100%;
+    }
+
+    .text {
+        margin-top: 40vh;
+        font-size: 10vw;
+        margin-bottom: 2vh;
+        color: #ffffff;
+    }
+
+    .text2 {
+        margin-top: -2vh;
+        font-size: 5vw;
+        color: #ffffff;
+    }
+
+    .text3 {
+        font-size: 3vw;
+    }
+
+    .cbtn {
+        font-size: 3vw;
+        border-radius: 5vw;
+        width: 30vw;
+        height: 20vh;
+    }
+    .custom-modal-width {
+        max-width: 800px;
+        margin-left: initial;
+    }
+}

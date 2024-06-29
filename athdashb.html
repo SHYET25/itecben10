@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/bootstrap.bundle.min.js"></script>
+</head>
+
+<style>
+body {
+    font-family: "Play";
+}
+
+.col-sm-2 {
+    background: linear-gradient(to bottom, #0B1ECB, #338E51);
+    height: 100vh;
+    text-align: center;
+    color: #ffffff;
+}
+
+.rounded {
+    border-radius: 50%;
+    height: 20vh;
+    width: 10vw;
+}
+
+.container {
+    margin-top: 5vh;
+    margin-bottom: 2vh;
+}
+
+.col-sm-10 {
+    background-image: url('images/dbbg.png');
+    background-position: calc(100%) top;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.text-cont {
+    color: #ffffff;
+    padding-left: 5vw;
+    padding-top: 5vh;
+}
+
+.vertical-text {
+    display: inline-block;
+    font-size: 3vw;
+    margin-top: 2vh;
+}
+
+.vertical-text span {
+    display: block;
+}
+
+.text {
+    font-size: 5vw;
+}
+
+.text2 {
+    font-size: 3vw;
+}
+
+.nested-row {
+    z-index: 1000;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.btn-secondary {
+    height: 25vh;
+    width: 20vw;
+    font-size: 2vw;
+    background-color: #D46A07;
+    color: #ffffff;
+    margin-top: 5vh;
+}
+.btn-primary,
+.btn-success {
+    height: 25vh;
+    width: 20vw;
+    font-size: 2vw;
+    color: #ffffff;
+    margin-top: 5vh;
+}
+
+.btn-secondary:hover {
+    background-color: #b65a05;
+}
+
+.btn-secondary svg,
+.btn-primary svg,
+.btn-success svg {
+    height: 15vh;
+    width: 15vw;
+}
+
+.h4 {
+    font-size: 1.5vw;
+}
+.logout {
+    color: #ffffff;
+    font-size: 2vw;
+    margin-bottom: -2vw;
+    margin-right: 2vw
+}
+@media only screen and (max-width: 700px) {
+    .col-sm-2 {
+        display: none;
+    }
+    .offcanvas {
+        background: linear-gradient(to bottom, #0B1ECB, #338E51);
+        height: 100vh;
+        text-align: center;
+        color: #ffffff;
+    }
+    .offcanvas-button {
+        display: block;
+        border: none;
+        border-radius: 0 15px 15px 0;
+    }
+
+    .offcanvas-body p, span{
+        font-size: 3vh;
+    }
+
+    .offcanvas-body svg {
+        border-radius: 50%;
+        height: 20vh;
+        width: 20vw;
+    }
+
+    .col-sm-10 {
+        background-image: url('images/dbbg.png');
+        background-position: calc(100%) top;
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        flex-direction: column;
+        height: 120vh;
+        width: 250vw;
+    }
+
+    .btn-secondary,
+    .btn-primary,
+    .btn-success {
+        height: 15vh;
+        width: 30vw;
+        margin-top: 2vh;
+        margin-left: 2vw;
+        margin-right: 2vw;
+    }
+
+    .btn-secondary svg,
+    .btn-primary svg,
+    .btn-success svg {
+        height: 10vh;
+        width: 10vw;
+    }
+
+    .nested-row {
+        flex-direction: row;
+        justify-content: space-around;
+    }
+}
+
+@media (min-width: 701px) {
+    .offcanvas-button {
+        display: none;
+    }
+}
+</style>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const offcanvas = document.getElementById('offcanvasSidebar');
+
+        function checkScreenSize() {
+            if (window.innerWidth > 700) {
+                offcanvas.style.display = 'none';
+            } else {
+                offcanvas.style.display = 'block';
+            }
+        }
+
+        checkScreenSize();
+
+        window.addEventListener('resize', function () {
+            checkScreenSize();
+        });
+
+        
+    });
+
+    
+</script>
+
+<body>
+    <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasSidebar" aria-labelledby="offcanvasSidebarLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasSidebarLabel">Profile</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="container d-flex justify-content-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle rounded" viewBox="0 0 16 16">
+                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+                    <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
+                </svg>
+            </div>
+            <p class="h4" id="name1">Surname, Firstname</p>
+            <p class="h4" id="username1">@username</p>
+            <div class="h1 vertical-text">
+                <span>A</span>
+                <span>T</span>
+                <span>H</span>
+                <span>L</span>
+                <span>E</span>
+                <span>T</span>
+                <span>E</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-2">
+            <div class="container d-flex justify-content-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle rounded" viewBox="0 0 16 16">
+                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+                    <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
+                </svg>
+            </div>
+            <p class="h4" id="name"> </p>
+            <p class="h4" id="username"></p>
+            <div class="h1 vertical-text">
+                <span>A</span>
+                <span>T</span>
+                <span>H</span>
+                <span>L</span>
+                <span>E</span>
+                <span>T</span>
+                <span>E</span>
+            </div>
+        </div>
+        <div class="col-sm-10">
+            <div class="offcanvas-button text-start">
+                <button class="btn btn-dark" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-controls="offcanvasSidebar">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/>
+                    </svg>
+                    Profile
+                </button>
+            </div>
+            <div class="text-cont">
+                <div class="d-flex justify-content-end">
+                    <a href="phpFile/buttonFunctions/logOut.php"><button class="btn logout">Log Out</button></a>
+                </div>
+                <p class="h1 text">Dashboard</p>
+                <p class="h1 text2">Basketball</p>
+            </div>
+            <div class="row nested-row">
+                <div class="col-sm-4 d-flex justify-content-center">
+                    <a href="player.html">
+                        <button type="button" class="btn btn-secondary">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-person-dash-fill" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M11 7.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5" />
+                                <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
+                            </svg>
+                            Player
+                        </button>
+                    </a>
+                </div>
+                <div class="col-sm-4 d-flex justify-content-center">
+                    <a href="team.html">
+                        <button type="button" class="btn btn-primary">
+                            <svg fill="currentColor" viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M 28.0000 27.1257 C 31.1936 27.1257 33.9415 24.2737 33.9415 20.5602 C 33.9415 16.8912 31.1787 14.1729 28.0000 14.1729 C 24.8213 14.1729 22.0584 16.9506 22.0584 20.5898 C 22.0584 24.2737 24.8064 27.1257 28.0000 27.1257 Z M 10.9029 27.4673 C 13.6658 27.4673 16.0722 24.9718 16.0722 21.7485 C 16.0722 18.5548 13.6509 16.1930 10.9029 16.1930 C 8.1401 16.1930 5.7040 18.6143 5.7188 21.7782 C 5.7188 24.9718 8.1252 27.4673 10.9029 27.4673 Z M 45.0970 27.4673 C 47.8748 27.4673 50.2811 24.9718 50.2811 21.7782 C 50.2811 18.6143 47.8599 16.1930 45.0970 16.1930 C 42.3491 16.1930 39.9278 18.5548 39.9278 21.7485 C 39.9278 24.9718 42.3342 27.4673 45.0970 27.4673 Z M 2.6143 40.8806 L 13.9035 40.8806 C 12.3586 38.6376 14.2451 34.1220 17.4387 31.6562 C 15.7899 30.5570 13.6658 29.7400 10.8881 29.7400 C 4.1889 29.7400 0 34.6864 0 38.8010 C 0 40.1379 .7427 40.8806 2.6143 40.8806 Z M 53.3856 40.8806 C 55.2723 40.8806 56 40.1379 56 38.8010 C 56 34.6864 51.8113 29.7400 45.1119 29.7400 C 42.3342 29.7400 40.2102 30.5570 38.5613 31.6562 C 41.7549 34.1220 43.6414 38.6376 42.0966 40.8806 Z M 18.6568 40.8806 L 37.3283 40.8806 C 39.6604 40.8806 40.4925 40.2122 40.4925 38.9050 C 40.4925 35.0726 35.6944 29.7845 27.9851 29.7845 C 20.2907 29.7845 15.4928 35.0726 15.4928 38.9050 C 15.4928 40.2122 16.3247 40.8806 18.6568 40.8806 Z" />
+                            </svg>
+                            Team
+                        </button>
+                    </a>
+                </div>
+                <div class="col-sm-4 d-flex justify-content-center">
+                    <a href="stats.html">
+                        <button type="button" class="btn btn-success">
+                            <svg fill="#ffffff" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 490 490" xml:space="preserve">
+                                <g>
+                                    <rect x="375.082" y="222.069" width="30.625" height="72.263" />
+                                    <rect x="333.092" y="185.38" width="30.625" height="108.952" />
+                                    <rect x="291.087" y="148.684" width="30.625" height="145.648" />
+                                    <rect x="249.097" y="111.988" width="30.625" height="182.344" />
+                                    <circle cx="143.562" cy="167.565" r="30.63" />
+                                    <path d="M112.518,205.232c0,0-31.045,0.414-31.045,28.975c0,28.56,0,35.184,0,35.184s60.432,0,60.641,0L112.518,205.232z" />
+                                    <path d="M205.651,269.391c0,0,0-6.623,0-35.184c0-28.561-31.045-28.975-31.045-28.975l-29.596,64.158H205.651z" />
+                                    <polygon points="143.562,205.232 122.245,205.232 143.562,252.419 164.88,205.232 	" />
+                                    <path d="M467.031,43.707H22.969C10.336,43.707,0,54.043,0,66.676v273.073c0,12.633,10.336,22.969,22.969,22.969h183.75v52.951h-69.863v30.625h216.289v-30.625h-69.863v-52.951h183.75c12.633,0,22.969-10.336,22.969-22.969V66.676C490,54.043,479.664,43.707,467.031,43.707z M459.375,332.092H30.625V74.332h428.75V332.092z" />
+                                </g>
+                            </svg>
+                            Stats
+                        </button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"  crossorigin="anonymous"></script>
+    <script src="jsFunctions/athProfile.js"></script>
+
+</body>
+</html>
