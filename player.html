@@ -32,6 +32,9 @@
             width: 700px; /* Set the desired width */
             height: 875px; /* Set the desired height */
         }
+        #profileImage.clickable {
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -44,7 +47,7 @@
                         <button class="btn btn-success d-none mb-3" id="saveButton">Save Profile</button>  
                         <p id="name" class="h1 mb-3"></p>
                         <p id="username" class="h1 mb-3"></p>
-                        <p id="email" class="h1"></h1>
+                        <p id="email" class="h1"></p>
                     </div>
                 </div>
                 <div class="row">
@@ -114,7 +117,9 @@
                 $('#saveButton').removeClass('d-none');
 
                 // Make the profile image clickable
-                $('#profileImage').addClass('clickable');
+                $('#profileImage').addClass('clickable').off('click').on('click', function() {
+                    $('#fileInput').click();
+                });
             });
 
             $('#saveButton').click(function() {
@@ -131,12 +136,15 @@
                     success: function(response) {
                         if (response.success) {
                             alert('Profile updated successfully');
-                            $('#nameInput').replaceWith('<h1 id="name">' + name + '</h1>');
-                            $('#usernameInput').replaceWith('<h1 id="username">' + username + '</h1>');
-                            $('#emailInput').replaceWith('<h1 id="email">' + email + '</h1>');
+                            $('#nameInput').replaceWith('<p id="name" class="h1 mb-3">' + name + '</p>');
+                            $('#usernameInput').replaceWith('<p id="username" class="h1 mb-3">' + username + '</p>');
+                            $('#emailInput').replaceWith('<p id="email" class="h1">' + email + '</p>');
 
                             $('#saveButton').addClass('d-none');
                             $('#editsButton').removeClass('d-none');
+
+                            // Remove clickable class after saving
+                            $('#profileImage').removeClass('clickable').off('click');
                         } else {
                             alert('Error: ' + response.error);
                             console.error(response.details);
@@ -147,10 +155,6 @@
                         alert('Error updating profile');
                     }
                 });
-            });
-
-            $('#profileImage').click(function() {
-                $('#fileInput').click();
             });
 
             $('#fileInput').change(function() {
