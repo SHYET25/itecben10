@@ -16,163 +16,176 @@
             background-image: url('images/playerbg.png');
             background-position: calc(100%) top;
             background-repeat: no-repeat;
-            background-size: 100% 100%;
+            background-size: 150% 100%;
             display: flex;
-            height: 100vh;
         }
+
         .text-container {
             margin-top: 10vh;
             margin-left: 5vh;
-            color: #ffffff;
-        }
-        .text-container2 {
-            margin-top: 10vh;
             color: #ffffff; 
+        }
+        .form-control {
+            margin-top: 1vh;
+        }
+        #profileImage {
+            width: 700px; /* Set the desired width */
+            height: 875px; /* Set the desired height */
         }
     </style>
 </head>
 <body>
     <div class="row img">
-        
-        <div class="col-md-6 d-flex">
+        <div class="col-md-6 order-2 order-md-1">
             <div class="text-container">
                 <div class="row">
                     <div class="col-md-12">
-                        <button class="btn btn-primary" id="editsButton">Edit Profile</button>
-                        <button class="btn btn-success d-none" id="saveButton">Save Profile</button>  
-                        <h1 id="name"></h1>
-                        <h1 id="username"></h1>
-                        <h1 id="email"></h1>
+                        <button class="btn btn-primary mb-4" id="editsButton">Edit Profile</button>
+                        <button class="btn btn-success d-none mb-3" id="saveButton">Save Profile</button>  
+                        <p id="name" class="h1 mb-3"></p>
+                        <p id="username" class="h1 mb-3"></p>
+                        <p id="email" class="h1"></h1>
                     </div>
                 </div>
-                <div class="text-container2">
-                    <h2>Height:</h2>
-                    <h2>Weight:</h2>
-                    <h2>Age:</h2>
-                    <h2>Position:</h2>
+                <div class="row">
+                    <div class="col-md-12" style="margin-top: 5vh;">
+                        <p class="h1">Height: <span id="height" class="h1"></span></p>
+                        <p class="h1">Weight: <span id="weight" class="h1"></span></p>
+                        <p class="h1">Age: <span id="age" class="h1"></span></p>
+                        <p class="h1">Position: <span id="position" class="h1"></span></p>
+                    </div>
                 </div>
-                <div class="text-container2">
-                    <h1>Performance Metrics</h1>
+                <div class="row">
+                    <div class="col-md-12" style="margin-top: 5vh;">
+                        <p class="h1">Performance Metrics</p>
+                    </div>
                 </div>
-            </div>  
+            </div>
         </div>
-        <div class="col-md-6 d-flex">
-                <img src="images/profile.png"  class="img-responsive" id="profileImage" alt="">
-                <input type="file" id="fileInput" accept="image/*" style="display: none;">
+        <div class="col-md-6 order-1 order-md-2">
+            <div class="row">
+                <div class="col-md-12">
+                    <img src="images/profile.png" class="img-responsive" id="profileImage" alt="">
+                    <input type="file" id="fileInput" accept="image/*" style="display: none;">
+                </div>
+            </div>
         </div>
-        
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"  crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
     <script src="js/bootstrap.bundle.min.js"></script>
     <script>
-$(document).ready(function() {
-    // Fetch logged-in user data
-    $.ajax({
-        type: "GET",
-        url: "phpFile/buttonFunctions/fetchLoggedIn.php",
-        dataType: 'json',
-        success: function(response) {
-            if (response.status === 'success') {
-                $('#name').text(response.loggedInUserData.ath_name);
-                $('#username').text(response.loggedInUserData.ath_user);
-                $('#email').text(response.loggedInUserData.ath_email);
-                if(response.loggedInUserData.ath_img === ''){
-                    $('#profileImage').attr('src', 'images/profile.png');
-                } else{
-                    $('#profileImage').attr('src', 'images/prof_pics/' + response.loggedInUserData.ath_img);
+        $(document).ready(function() {
+            // Fetch logged-in user data
+            $.ajax({
+                type: "GET",
+                url: "phpFile/buttonFunctions/fetchLoggedIn.php",
+                dataType: 'json',
+                success: function(response) {
+                    if (response.status === 'success') {
+                        $('#name').text(response.loggedInUserData.ath_name);
+                        $('#username').text(response.loggedInUserData.ath_user);
+                        $('#email').text(response.loggedInUserData.ath_email);
+                        $('#height').text(response.loggedInUserData.ath_height);
+                        $('#weight').text(response.loggedInUserData.ath_weight);
+                        $('#age').text(response.loggedInUserData.ath_age);
+                        $('#position').text(response.loggedInUserData.ath_position);
+                        if (response.loggedInUserData.ath_img === '') {
+                            $('#profileImage').attr('src', 'images/profile.png');
+                        } else {
+                            $('#profileImage').attr('src', 'images/prof_pics/' + response.loggedInUserData.ath_img);
+                        }
+                    } else {
+                        alert(response.message);
+                        window.location.href = 'login.html';
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('AJAX Error:', error);
                 }
-            } else {
-                alert(response.message);
-                window.location.href = 'login.html';
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error('AJAX Error:', error);
-        }
-    });
-
-    $('#editsButton').click(function() {
-        $('#name').replaceWith('<input type="text" class="form-control" id="nameInput" value="' + $('#name').text() + '">');
-        $('#username').replaceWith('<input type="text" class="form-control" id="usernameInput" value="' + $('#username').text() + '">');
-        $('#email').replaceWith('<input type="text" class="form-control" id="emailInput" value="' + $('#email').text() + '">');
-
-        $('#editsButton').addClass('d-none');
-        $('#saveButton').removeClass('d-none');
-
-        // Make the profile image clickable
-        $('#profileImage').addClass('clickable');
-        $('#profileImage').on('click', function() {
-            $('#fileInput').click();
-        });
-    });
-
-    $('#saveButton').click(function() {
-        const name = $('#nameInput').val();
-        const username = $('#usernameInput').val();
-        const email = $('#emailInput').val();
-
-        // AJAX request to save updated profile data
-        $.ajax({
-            type: "POST",
-            url: "phpFile/buttonFunctions/update_profile.php",
-            data: { name: name, username: username, email: email },
-            dataType: 'json',
-            success: function(response) {
-                if (response.success) {
-                    alert('Profile updated successfully');
-                    $('#nameInput').replaceWith('<h1 id="name">' + name + '</h1>');
-                    $('#usernameInput').replaceWith('<h1 id="username">' + username + '</h1>');
-                    $('#emailInput').replaceWith('<h1 id="email">' + email + '</h1>');
-
-                    $('#saveButton').addClass('d-none');
-                    $('#editsButton').removeClass('d-none');
-                } else {
-                    alert('Error: ' + response.error);
-                    console.error(response.details);
-                }
-            },
-            error: function(xhr, status, error) {
-                console.error('AJAX Error:', error);
-                alert('Error updating profile');
-            }
-        });
-    });
-
-    $('#fileInput').change(function() {
-        const file = this.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                $('#profileImage').attr('src', e.target.result);
-            }
-            reader.readAsDataURL(file);
-
-            // Upload the image
-            const formData = new FormData();
-            formData.append('profileImage', file);
-
-            fetch('phpFile/buttonFunctions/update_profile.php', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('Profile image updated successfully');
-                    document.querySelector('#profileImage').src = 'images/prof_pics/' + data.image; // Update displayed image
-                } else {
-                    alert('Error: ' + data.error);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Error uploading image');
             });
-        }   
-    });
-});
 
+            $('#editsButton').click(function() {
+                $('#name').replaceWith('<div class="mb-3"><input type="text" style="font-size: 1.5vw;" class="form-control" id="nameInput" value="' + $('#name').text() + '"></div>');
+                $('#username').replaceWith('<div class="mb-3"><input type="text" style="font-size: 1.5vw;" class="form-control" id="usernameInput" value="' + $('#username').text() + '"></div>');
+                $('#email').replaceWith('<div class=""><input type="text" style="font-size: 1.5vw;" class="form-control" id="emailInput" value="' + $('#email').text() + '"></div>');
+
+                $('#editsButton').addClass('d-none');
+                $('#saveButton').removeClass('d-none');
+
+                // Make the profile image clickable
+                $('#profileImage').addClass('clickable');
+            });
+
+            $('#saveButton').click(function() {
+                const name = $('#nameInput').val();
+                const username = $('#usernameInput').val();
+                const email = $('#emailInput').val();
+
+                // AJAX request to save updated profile data
+                $.ajax({
+                    type: "POST",
+                    url: "phpFile/buttonFunctions/update_profile.php",
+                    data: { name: name, username: username, email: email },
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.success) {
+                            alert('Profile updated successfully');
+                            $('#nameInput').replaceWith('<h1 id="name">' + name + '</h1>');
+                            $('#usernameInput').replaceWith('<h1 id="username">' + username + '</h1>');
+                            $('#emailInput').replaceWith('<h1 id="email">' + email + '</h1>');
+
+                            $('#saveButton').addClass('d-none');
+                            $('#editsButton').removeClass('d-none');
+                        } else {
+                            alert('Error: ' + response.error);
+                            console.error(response.details);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('AJAX Error:', error);
+                        alert('Error updating profile');
+                    }
+                });
+            });
+
+            $('#profileImage').click(function() {
+                $('#fileInput').click();
+            });
+
+            $('#fileInput').change(function() {
+                const file = this.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        $('#profileImage').attr('src', e.target.result);
+                    }
+                    reader.readAsDataURL(file);
+
+                    // Upload the image
+                    const formData = new FormData();
+                    formData.append('profileImage', file);
+
+                    fetch('phpFile/buttonFunctions/update_profile.php', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert('Profile image updated successfully');
+                            $('#profileImage').attr('src', 'images/prof_pics/' + data.image);
+                        } else {
+                            alert('Error: ' + data.error);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Error uploading image');
+                    });
+                }
+            });
+        });
     </script>
 </body>
 </html>
