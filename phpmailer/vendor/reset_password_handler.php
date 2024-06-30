@@ -1,5 +1,5 @@
 <?php
-require 'db.php'; // Include the database connection
+require '../../phpFile/connection/connection.php'; // Include the database connection
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $token = $_POST['token'];
@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     // Validate token and check expiry
-    $stmt = $mysqli->prepare("SELECT email, expires FROM password_reset WHERE token=?");
+    $stmt = $conn->prepare("SELECT email, expires FROM password_reset WHERE token=?");
     $stmt->bind_param('s', $token);
     $stmt->execute();
     $stmt->bind_result($email, $expires);
@@ -25,18 +25,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     // Update the user's password
-    $new_password_hash = password_hash($password, PASSWORD_BCRYPT);
-    $stmt = $mysqli->prepare("UPDATE athlete_info SET ath_password=? WHERE ath_email=?");
-    $stmt->bind_param('ss', $new_password_hash, $email);
+    $stmt = $conn->prepare("UPDATE athlete_info SET ath_pass=? WHERE ath_email=?");
+    $stmt->bind_param('ss', $password, $email); // Store plain text password
     $stmt->execute();
     $stmt->close();
 
     // Delete the token
-    $stmt = $mysqli->prepare("DELETE FROM password_reset WHERE email=?");
+    $stmt = $conn->prepare("DELETE FROM password_reset WHERE email=?");
     $stmt->bind_param('s', $email);
     $stmt->execute();
     $stmt->close();
 
     echo "Password has been reset successfully";
+
 }
 ?>
