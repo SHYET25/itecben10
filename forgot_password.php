@@ -2,8 +2,8 @@
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-require 'autoload.php'; // Path to PHPMailer autoload.php
-require '../../phpFile/connection/connection.php'; // Include the database connection
+require 'phpmailer/vendor/autoload.php'; // Path to PHPMailer autoload.php
+require 'phpFile/connection/connection.php'; // Include the database connection
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = $_POST['email'];
@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <p>Hello,</p>
         <p>You recently requested to reset your password for the SPORTS MANAGEMENT SYSTEM.</p>
         <p>Click the link below to reset your password:</p>
-        <p><a href='http://localhost/system/phpmailer/vendor/reset_password.php?token=$token' target='_blank'>Reset Password</a></p>
+        <p><a href='http://localhost/system/reset_password.php?token=$token' target='_blank'>Reset Password</a></p>
         <p>If you did not request this password reset, please ignore this email.</p>
         <p>This password reset link is valid for 30 minutes from the time of this email.</p>
         <p>Thank you,</p>
