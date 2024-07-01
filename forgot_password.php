@@ -40,20 +40,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;                    
-        $mail->Username = 'kyuuichi12@gmail.com'; // SMTP username
-        $mail->Password = 'cayj eaug pwcx xqvn  '; // SMTP password or App Password
+        $mail->Username = 'sports.management.system.dev@gmail.com'; // SMTP username 1 cayj eaug pwcx xqvn 2 wfdr zmys kmlu snym
+        $mail->Password = 'wfdr zmys kmlu snym'; // SMTP password or App Password
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
 
         // Recipients
-        $mail->setFrom('your_email@gmail.com', 'SPORTS SYSTEM');
+        $mail->setFrom('your_email@gmail.com', 'SPORTS MANAGEMENT SYSTEM');
         $mail->addAddress($email);
 
         // Content
         $mail->isHTML(true);
         $mail->Subject = 'Password Reset Request';
         $mail->Body = <<<EOT
-        <p>Hello,</p>
+        <p>Hello</p>
         <p>You recently requested to reset your password for the SPORTS MANAGEMENT SYSTEM.</p>
         <p>Click the link below to reset your password:</p>
         <p><a href='http://localhost/system/reset_password.php?token=$token' target='_blank'>Reset Password</a></p>
