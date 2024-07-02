@@ -1049,19 +1049,17 @@ $(document).ready(function() {
     // Function to populate the athlete table
     function populateTableMatch(athleteTableBody, data) {
         athleteTableBody.empty();
-        var numColumns = 4;
-        var columnSizeClass = 'col-md-' + Math.floor(12 / numColumns);
-
+    
         data.forEach(function(athlete) {
             var card = `
-                <div class="${columnSizeClass} mb-4">
-                    <div class="card" style="max-width: 100%;">
-                        <img src="${athlete.ath_img}" class="card-img-top" alt="Athlete Image">
-                        <div class="card-body">
-                            <h5 class="card-title">${athlete.ath_name}</h5>
-                            <p class="card-text"><strong>Position:</strong> ${athlete.ath_position}</p>
-                            <p class="card-text"><strong>ID:</strong> ${athlete.AthleteID}</p>
-                            <p class="card-text editable" data-ath-id="${athlete.AthleteID}" data-ath-team="${athlete.ath_team}">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+                    <div class="card" style="max-width: 100%; height: 100%;">
+                        <img src="${athlete.ath_img}" class="card-img-top" alt="Athlete Image" style="height: 150px; object-fit: cover;">
+                        <div class="card-body" style="font-size: 1vw;">
+                            <h5 class="card-title" style="font-size: 0.8vw;">${athlete.ath_name}</h5>
+                            <p class="card-text" style="font-size: 0.8vw;"><strong>Position:</strong> ${athlete.ath_position}</p>
+                            <p class="card-text" style="font-size: 0.8vw;"><strong>ID:</strong> ${athlete.AthleteID}</p>
+                            <p class="card-text editable" data-ath-id="${athlete.AthleteID}" data-ath-team="${athlete.ath_team}" style="font-size: 1.5vw;">
                                 <strong>Team:</strong> ${athlete.ath_team.trim()}
                             </p>
                         </div>
@@ -1073,21 +1071,21 @@ $(document).ready(function() {
                 $card.addClass('disabled-card');
             }
         });
-
+    
         // Attach double-click event to make the team name editable
         $('.editable').off('dblclick').on('dblclick', function() {
             var $this = $(this);
             var teamName = $this.text().replace('Team:', '').trim();
-            var input = $(`<input type="text" class="edit-input" value="${teamName}" />`);
+            var input = $(`<input type="text" class="edit-input" value="${teamName}" style="font-size: 1.5vw;" />`);
             $this.html(`<strong>Team:</strong> `).append(input);
             input.focus();
-
+    
             // Attach focusout event to update the team name
             input.off('focusout').on('focusout', function() {
                 var newTeamName = $(this).val().trim();
                 var athId = $this.data('ath-id');
                 var oldTeamName = $this.data('ath-team');
-
+    
                 $.ajax({
                     type: "POST",
                     url: "phpFile/buttonFunctions/updateTeam.php",
@@ -1111,7 +1109,7 @@ $(document).ready(function() {
             });
         });
     }
-
+    
     // Function to fetch team data and populate the respective table
     function fetchTeamDataCreate(dropdownId, tableId) {
         var team = $(dropdownId).val();
