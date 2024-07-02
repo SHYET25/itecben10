@@ -18,6 +18,8 @@ $(document).ready(function() {
                     $('#username').text('@' + response.loggedInUserData.coach_user);
                     $('#name1').text(response.loggedInUserData.coach_name);
                     $('#username1').text('@' + response.loggedInUserData.coach_user);
+                    console.log(response.loggedInUserData.coach_user);
+                    console.log(response.loggedInUserData.coach_name);
                 } else {
                     alert(response.message);
                     window.location.href = 'login.html';
@@ -285,6 +287,7 @@ $(document).ready(function() {
                     fetchAndUpdateTeamTotal(gameNumber, firstTeam, secondTeam);
                     
                     fetchTeamQuarterTotal(gameNumber, firstTeam, secondTeam, quarter);
+                    fetchFinalPoints(gameNumber, firstTeam, secondTeam);
 
                 } else {
                     console.error('Error fetching teams:', response.message);
@@ -545,6 +548,61 @@ $(document).ready(function() {
 
     }
 
+    function fetchFinalPoints(gameNumber, firstTeam, secondTeam) {
+        console.log("Match ID:", gameNumber);
+        console.log("First Team:", firstTeam);
+        console.log("Second Team:", secondTeam);
+    
+        // AJAX request for first team
+        $.ajax({
+            type: "GET",
+            url: "phpFile/buttonFunctions/fetchFinalPoints.php",
+            data: { match_id: gameNumber, team: firstTeam },
+            dataType: 'json',
+            success: function(response) {
+                if (response.status === 'success') {
+                    console.log("First Team Final Points:", response.data);
+                    updateScoreboard(response.data, 'first');
+                } else {
+                    console.error("Error fetching sums for first team:", response.message);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('AJAX Error:', error);
+            }
+        });
+    
+        // AJAX request for second team
+        $.ajax({
+            type: "GET",
+            url: "phpFile/buttonFunctions/fetchFinalPoints.php",
+            data: { match_id: gameNumber, team: secondTeam },
+            dataType: 'json',
+            success: function(response) {
+                if (response.status === 'success') {
+                    console.log("Second Team Final Points:", response.data);
+                    updateScoreboard(response.data, 'second');
+                } else {
+                    console.error("Error fetching sums for second team:", response.message);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('AJAX Error:', error);
+            }
+        });
+    }
+    
+    // Function to update scoreboard with fetched points
+    function updateScoreboard(points, team) {
+        if (team === 'first') {
+            $('#gamePointsTeamA').text(points);
+        } else if (team === 'second') {
+            $('#gamePointsTeamB').text(points);
+        }
+    }
+    
+    
+
 
 
     function fetchTeamQuarterTotal(gameNumber, firstTeam, secondTeam, quarter) {
@@ -766,13 +824,17 @@ $(document).ready(function() {
                     if (['game_2fgm', 'game_3fgm', 'game_ftm', 'game_2fga', 'game_3fga', 'game_fta', 'game_ass', 'game_block', 'game_steal', 'game_ofreb', 'game_defreb', 'game_turn', 'game_foul'].includes(key)) {
                         (function(key, player) { // Capture player data in closure
                             var minusButton = $('<button>')
-                                .text('-')
-                                .addClass('btn btn-danger mr-2')
-                                .css({
-                                    fontSize: '1rem',
-                                    fontWeight: 'bold',
-                                    padding: '0.3rem 0.5rem'
-                                });
+                            .addClass('btn btn-danger mr-2')
+                            .css({
+                                fontSize: '1rem',
+                                fontWeight: 'bold',
+                                padding: '0.3rem 0.5rem',
+                                width: '100%' // Adjust button width for responsiveness
+                            })
+                            .append($('<i>').addClass('bi bi-dash'));
+                        
+                        // bi-dash is a Bootstrap icon class for a dash icon
+                        
     
                             // Minus button click handler
                             minusButton.on('click', function() {
@@ -801,13 +863,17 @@ $(document).ready(function() {
                     if (['game_2fgm', 'game_3fgm', 'game_ftm', 'game_2fga', 'game_3fga', 'game_fta', 'game_ass', 'game_block', 'game_steal', 'game_ofreb', 'game_defreb', 'game_turn', 'game_foul'].includes(key)) {
                         (function(key, player) { // Capture player data in closure
                             var plusButton = $('<button>')
-                                .text('+')
-                                .addClass('btn btn-success')
-                                .css({
-                                    fontSize: '1rem',
-                                    fontWeight: 'bold',
-                                    padding: '0.2rem 0.5rem'
-                                });
+                            .addClass('btn btn-success')
+                            .css({
+                                fontSize: '1rem',
+                                fontWeight: 'bold',
+                                padding: '0.2rem 0.5rem',
+                                width: '100%' // Adjust button width for responsiveness
+                            })
+                            .append($('<i>').addClass('bi bi-plus'));
+                        
+                        // bi-plus is a Bootstrap icon class for a plus icon
+                        
     
                             // Plus button click handler
                             plusButton.on('click', function() {
@@ -878,6 +944,7 @@ $(document).ready(function() {
                                 
                                 fetchTeamQuarterSum(gameNumber, firstTeam, secondTeam, quarter, player.match_id, player.game_team, player.game_quarter);
                                 fetchAndUpdateTeamTotal(gameNumber, firstTeam, secondTeam, quarter, player.match_id, player.game_team, player.game_quarter);
+                                fetchFinalPoints(gameNumber, firstTeam, secondTeam);
                                 
                             } else {
                                 console.error('Failed to update database:', response.message);
