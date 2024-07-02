@@ -2,8 +2,8 @@
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-require 'autoload.php'; // Path to PHPMailer autoload.php
-require '../../phpFile/connection/connection.php'; // Include the database connection
+require 'phpmailer/vendor/autoload.php'; // Path to PHPMailer autoload.php
+require 'phpFile/connection/connection.php'; // Include the database connection
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = $_POST['email'];
@@ -11,6 +11,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Validate email address
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         echo json_encode(array("error" => "Invalid email format"));
+        exit();
+    }
+
+    // Retrieve the user's name from athlete_info or coach_info table
+    $name = '';
+    $stmt = $conn->prepare("SELECT ath_name FROM athlete_info WHERE ath_email = ? UNION SELECT coach_name FROM coach_info WHERE coach_email = ?");
+    $stmt->bind_param('ss', $email, $email);
+    $stmt->execute();
+    $stmt->bind_result($name);
+    if ($stmt->fetch()) {
+        $stmt->close();
+    } else {
+        $stmt->close();
+        echo json_encode(array("error" => "Email not found"));
         exit();
     }
 
@@ -41,27 +55,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;                    
         $mail->Username = 'kyuuichi12@gmail.com'; // SMTP username
-        $mail->Password = 'cayj eaug pwcx xqvn  '; // SMTP password or App Password
+        $mail->Password = 'cayj eaug pwcx xqvn'; // SMTP password or App Password
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
 
         // Recipients
-        $mail->setFrom('your_email@gmail.com', 'SPORTS SYSTEM');
+        $mail->setFrom('your_email@gmail.com', 'SPORTS MANAGEMENT SYSTEM');
         $mail->addAddress($email);
 
         // Content
         $mail->isHTML(true);
         $mail->Subject = 'Password Reset Request';
         $mail->Body = <<<EOT
-        <p>Hello,</p>
-        <p>You recently requested to reset your password for the SPORTS MANAGEMENT SYSTEM.</p>
+        <p>Hello,<b> $name</p>
+        <p>You recently requested to reset your password for the<b> SPORTS MANAGEMENT SYSTEM</b>.</p>
         <p>Click the link below to reset your password:</p>
-        <p><a href='http://localhost/system/phpmailer/vendor/reset_password.php?token=$token' target='_blank'>Reset Password</a></p>
+        <p><a href='http://localhost/system/reset_password.php?token=$token' target='_blank'><b>Reset Password</a></p>
         <p>If you did not request this password reset, please ignore this email.</p>
-        <p>This password reset link is valid for 30 minutes from the time of this email.</p>
+        <p>This password reset link is valid for <b>30 minutes</b> from the time of this email.</p>
         <p>Thank you,</p>
-        <p>The SPORTS MANAGEMENT SYSTEM Team</p>
-        <p>Developer</p>
+        <p><b>The SPORTS MANAGEMENT SYSTEM Team</p>
+        <p><b>Developer</p>
         EOT;
         
         $mail->send();

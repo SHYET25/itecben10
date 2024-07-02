@@ -1,5 +1,5 @@
 <?php
-require '../../phpFile/connection/connection.php'; // Include the database connection
+require 'phpFile/connection/connection.php'; // Include the database connection
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $token = $_POST['token'];
@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $confirm_password = $_POST['confirm_password'];
 
     if ($password !== $confirm_password) {
-        echo "Passwords do not match";
+        echo json_encode(array("error" => "Passwords do not match"));
         exit();
     }
 
@@ -20,11 +20,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->close();
 
     if (!$email || $expires < time()) {
-        echo "Invalid or expired token";
+        echo json_encode(array("error" => "Invalid or expired token"));
         exit();
     }
 
-    // Update the user's password
+    // Update the user's password (storing plain text)
     $stmt = $conn->prepare("UPDATE athlete_info SET ath_pass=? WHERE ath_email=?");
     $stmt->bind_param('ss', $password, $email); // Store plain text password
     $stmt->execute();
@@ -36,7 +36,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->execute();
     $stmt->close();
 
-    echo "Password has been reset successfully";
-
+    echo json_encode(array("message" => "Password has been reset successfully"));
 }
 ?>
