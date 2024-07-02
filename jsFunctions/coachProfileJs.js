@@ -85,9 +85,9 @@ $(document).ready(function() {
                                 </div>
                                 <div class="col-md-8">
                                     <div class="card-body">
-                                        <h5 class="card-title">${athlete.ath_name}</h5>
-                                        <p class="card-text"><strong>Position:</strong> ${athlete.ath_position}</p>
-                                        <p class="card-text"><strong>ID:</strong> ${athlete.AthleteID}</p>
+                                        <p class="card-title h5">${athlete.ath_name}</p>
+                                        <p class="card-text h6"><strong>Position:</strong> ${athlete.ath_position}</p>
+                                        <p class="card-text h6"><strong>ID:</strong> ${athlete.AthleteID}</p>
                                         <div class="form-check">
                                             <input type="checkbox" class="form-check-input athlete-checkbox" data-id="${athlete.AthleteID}" ${athlete.disabled ? 'disabled' : ''}>
                                             <label class="form-check-label">Select Athlete</label>
@@ -131,9 +131,9 @@ $(document).ready(function() {
         selectedAthletesList.empty();
 
         selectedAthletes.forEach(function(athlete) {
-            var athleteItem = `<div class="selected-athlete-item mr-2">
+            var athleteItem = `<div class="selected-athlete-item">
                                 ${athlete.ath_name} (${athlete.ath_position})
-                                <button type="button" class="btn btn-link btn-remove-athlete" data-id="${athlete.AthleteID}">&times;</button>
+                                <button type="button" class="btn btn-link btn-remove-athlete" data-id="${athlete.AthleteID}"><i class="bi bi-x-circle-fill"></i></button>
                                </div>`;
             selectedAthletesList.append(athleteItem);
         });
@@ -812,7 +812,7 @@ $(document).ready(function() {
                                 fontSize: '1rem',
                                 fontWeight: 'bold',
                                 padding: '0.3rem 0.5rem',
-                                width: '100%' // Adjust button width for responsiveness
+                                width: '4rem' // Adjust button width for responsiveness
                             })
                             .append($('<i>').addClass('bi bi-dash'));
                         
@@ -851,7 +851,7 @@ $(document).ready(function() {
                                 fontSize: '1rem',
                                 fontWeight: 'bold',
                                 padding: '0.2rem 0.5rem',
-                                width: '100%' // Adjust button width for responsiveness
+                                width: '4rem' // Adjust button width for responsiveness
                             })
                             .append($('<i>').addClass('bi bi-plus'));
                         
@@ -1054,14 +1054,13 @@ $(document).ready(function() {
             var card = `
                 <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
                     <div class="card" style="max-width: 100%; height: 100%;">
-                        <img src="${athlete.ath_img}" class="card-img-top" alt="Athlete Image" style="height: 150px; object-fit: cover;">
+                        <img src="${athlete.ath_img}" class="card-img-top img-thumbnail" alt="Athlete Image" style="height: 250px; object-fit: cover;">
                         <div class="card-body" style="font-size: 1vw;">
-                            <h5 class="card-title" style="font-size: 0.8vw;">${athlete.ath_name}</h5>
-                            <p class="card-text" style="font-size: 0.8vw;"><strong>Position:</strong> ${athlete.ath_position}</p>
-                            <p class="card-text" style="font-size: 0.8vw;"><strong>ID:</strong> ${athlete.AthleteID}</p>
-                            <p class="card-text editable" data-ath-id="${athlete.AthleteID}" data-ath-team="${athlete.ath_team}" style="font-size: 1.5vw;">
-                                <strong>Team:</strong> ${athlete.ath_team.trim()}
-                            </p>
+                            <p class="card-title text-center h5">${athlete.ath_name}</h5>
+                            <p class="card-text h6"><strong>Position:</strong> ${athlete.ath_position}</p>
+                            <p class="card-text h6"><strong>ID:</strong> ${athlete.AthleteID}</p>
+                            <p class="card-text h6   editable" data-ath-id="${athlete.AthleteID}" data-ath-team="${athlete.ath_team}">
+                            <strong>Team:</strong> ${athlete.ath_team.trim()}</p>
                         </div>
                     </div>
                 </div>`;
@@ -1367,71 +1366,204 @@ $(document).ready(function() {
     });
 
     // Function to fetch and display match results
-    $('#showMatchesButton').click(function() {
-        $.ajax({
-            type: "GET",
-            url: "phpFile/buttonFunctions/fetchMatches.php",
-            dataType: 'json',
-            success: function(response) {
-                if (response.status === 'success') {
-                    var matches = response.data;
-                    var matchResultsContainer = $('#matchResultsContainer');
-                    matchResultsContainer.empty(); // Clear previous content
+$('#showMatchesButton').click(function() {
+    $.ajax({
+        type: "GET",
+        url: "phpFile/buttonFunctions/fetchMatches.php",
+        dataType: 'json',
+        success: function(response) {
+            if (response.status === 'success') {
+                var matches = response.data;
+                var matchResultsContainer = $('#matchResultsContainer');
+                matchResultsContainer.empty(); // Clear previous content
 
-                    // Loop through each match and create cards
-                    matches.forEach(function(match) {
-                        var cardHtml = `
-                            <div class="col-12 mb-4">
-                                <div class="card gradient-bg match-card" 
-                                     data-match-id="${match.bball_match_id}" 
-                                     data-team1="${match.team_1}" 
-                                     data-team2="${match.team_2}">
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <!-- Left side (Winner) -->
-                                            <div class="col-4 text-center">
-                                                <h4>W</h4>
-                                                <p>${match.match_win}</p>
-                                                <p>${match.team_1_score}</p>
-                                            </div>
+                // Loop through each match and create cards
+                matches.forEach(function(match) {
+                    var cardHtml = `
+                        <div class="col-12 mb-4">
+                            <div class="card gradient-bg match-card" 
+                                 data-match-id="${match.bball_match_id}" 
+                                 data-team1="${match.team_1}" 
+                                 data-team2="${match.team_2}">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <!-- Left side (Winner) -->
+                                        <div class="col-4 text-center">
+                                            <p class="h1">W</p>
+                                            <p class="h3">${match.match_win}</p>
+                                            <p class="h3">${match.team_1_score}</p>
+                                        </div>
 
-                                            <!-- Middle (Match details) -->
-                                            <div class="col-4 text-center">
-                                                <h5>${match.match_name}</h5>
-                                                <p>vs</p>
-                                                <p>${match.bball_match_id}</p>
-                                            </div>
+                                        <!-- Middle (Match details) -->
+                                        <div class="col-4 text-center">
+                                            <p class="h3">${match.match_name}</p>
+                                            <p class="h1">vs</p>
+                                            <p class="h3">${match.bball_match_id}</p>
+                                        </div>
 
-                                            <!-- Right side (Loser) -->
-                                            <div class="col-4 text-center">
-                                                <h4>L</h4>
-                                                <p>${match.match_lose}</p>
-                                                <p>${match.team_2_score}</p>
-                                            </div>
+                                        <!-- Right side (Loser) -->
+                                        <div class="col-4 text-center">
+                                            <p class="h1">L</p>
+                                            <p class="h3">${match.match_lose}</p>
+                                            <p class="h3">${match.team_2_score}</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        `;
-                        matchResultsContainer.append(cardHtml);
-                    });
+                        </div>
+                    `;
+                    matchResultsContainer.append(cardHtml);
+                });
 
-                    // Show the modal
-                    $('#matchesModal').modal('show');
-                } else {
-                    console.error('Error fetching match results:', response.message);
-                }
-            },
-            error: function(xhr, status, error) {
-                console.error('AJAX Error fetching match results:', error);
+                // Show the modal
+                $('#matchesModal').modal('show');
+
+                // Add click event to match cards
+                $('.match-card').click(function() {
+                    var matchId = $(this).data('match-id');
+                    fetchGameDetails(matchId);
+                });
+            } else {
+                console.error('Error fetching match results:', response.message);
             }
-        });
+        },
+        error: function(xhr, status, error) {
+            console.error('AJAX Error fetching match results:', error);
+        }
     });
+});
 
-    // Initialize modal on show
-    $('#matchesModal').on('show.bs.modal', function() {
-        // Clear previous game details if any
-        $('#firstTableBody').empty();
-        $('#secondTableBody').empty();
+function fetchGameDetails(matchId) {
+    $.ajax({
+        type: "GET",
+        url: "phpFile/buttonFunctions/fetchGameDetails.php",
+        data: { match_id: matchId },
+        dataType: 'json',
+        success: function(response) {
+            if (response.status === 'success') {
+                var gameDetails = response.data;
+                var gameDetailsContent = $('#gameDetailsContent');
+                gameDetailsContent.empty(); // Clear previous content
+
+                gameDetails.forEach(function(details, index) {
+                    var activeClass = index === 0 ? 'active' : '';
+                    var tableHtml = `
+                        <div class="carousel-item ${activeClass}">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h5>Team 1 Game Details (Quarter ${details.quarter})</h5>
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Quarter</th>
+                                                <th>Points</th>
+                                                <th>2FGM</th>
+                                                <th>3FGM</th>
+                                                <th>FTM</th>
+                                                <th>2PTS</th>
+                                                <th>3PTS</th>
+                                                <th>FTPTS</th>
+                                                <th>2FGA</th>
+                                                <th>3FGA</th>
+                                                <th>FTA</th>
+                                                <th>ASS</th>
+                                                <th>BLOCK</th>
+                                                <th>STEAL</th>
+                                                <th>OFREB</th>
+                                                <th>DEFREB</th>
+                                                <th>TURN</th>
+                                                <th>FOUL</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>${details.quarter}</td>
+                                                <td>${details.team1.points}</td>
+                                                <td>${details.team1.fgm2}</td>
+                                                <td>${details.team1.fgm3}</td>
+                                                <td>${details.team1.ftm}</td>
+                                                <td>${details.team1.pts2}</td>
+                                                <td>${details.team1.pts3}</td>
+                                                <td>${details.team1.ftpts}</td>
+                                                <td>${details.team1.fga2}</td>
+                                                <td>${details.team1.fga3}</td>
+                                                <td>${details.team1.fta}</td>
+                                                <td>${details.team1.ass}</td>
+                                                <td>${details.team1.block}</td>
+                                                <td>${details.team1.steal}</td>
+                                                <td>${details.team1.ofreb}</td>
+                                                <td>${details.team1.defreb}</td>
+                                                <td>${details.team1.turn}</td>
+                                                <td>${details.team1.foul}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-md-6">
+                                    <h5>Team 2 Game Details (Quarter ${details.quarter})</h5>
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Quarter</th>
+                                                <th>Points</th>
+                                                <th>2FGM</th>
+                                                <th>3FGM</th>
+                                                <th>FTM</th>
+                                                <th>2PTS</th>
+                                                <th>3PTS</th>
+                                                <th>FTPTS</th>
+                                                <th>2FGA</th>
+                                                <th>3FGA</th>
+                                                <th>FTA</th>
+                                                <th>ASS</th>
+                                                <th>BLOCK</th>
+                                                <th>STEAL</th>
+                                                <th>OFREB</th>
+                                                <th>DEFREB</th>
+                                                <th>TURN</th>
+                                                <th>FOUL</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>${details.quarter}</td>
+                                                <td>${details.team2.points}</td>
+                                                <td>${details.team2.fgm2}</td>
+                                                <td>${details.team2.fgm3}</td>
+                                                <td>${details.team2.ftm}</td>
+                                                <td>${details.team2.pts2}</td>
+                                                <td>${details.team2.pts3}</td>
+                                                <td>${details.team2.ftpts}</td>
+                                                <td>${details.team2.fga2}</td>
+                                                <td>${details.team2.fga3}</td>
+                                                <td>${details.team2.fta}</td>
+                                                <td>${details.team2.ass}</td>
+                                                <td>${details.team2.block}</td>
+                                                <td>${details.team2.steal}</td>
+                                                <td>${details.team2.ofreb}</td>
+                                                <td>${details.team2.defreb}</td>
+                                                <td>${details.team2.turn}</td>
+                                                <td>${details.team2.foul}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    gameDetailsContent.append(tableHtml);
+                });
+
+                // Show the game details modal
+                $('#gameDetailsModal').modal('show');
+            } else {
+                console.error('Error fetching game details:', response.message);
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('AJAX Error fetching game details:', error);
+        }
     });
+}
+
 });

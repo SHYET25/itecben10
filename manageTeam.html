@@ -17,8 +17,12 @@
             font-family: "Play";
             background-color: #040E20;
         }
-        .h1 {
+        .h1, .h3 {
             color: #ffffff;
+        }
+
+        .head-title {
+            font-size: 4rem;
         }
         .selected-athlete-item {
             display: inline-flex;
@@ -50,51 +54,59 @@
             background-color: red; /* Adjust this color as per your design */
         }
 
-        .modal-dialog.modal-wider {
+        .modal-dialog .modal-wider {
             max-width: 95%;
         }
 
         .table th, .table td {
             text-align: center;
             vertical-align: middle;
+            font-weight: bold;
         }
 
         .table thead th {
             background-color: #007bff;
             color: white;
+
         }
         
         .gradient-bg {
-            background: linear-gradient(to right, green, red);
+            background: linear-gradient(to right, rgb(75, 230, 75), rgb(240, 50, 50));
         }
 
-        .btn-custom {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            margin: 5px;
-            width: 20vw; /* Set width to 20% of viewport width */
+        .modal-title {
+            color: #040E20;
+            font-size: 3rem;
+            font-weight: bold;
         }
+
+        .btn-lg {
+            margin: 1vw;
+            width: 15rem;
+        }
+
     </style>
 </head>
 <body>
     <div class="row">
         <div class="col-md-12 text-center">
-            <p class="h1">Team Management</p>
+            <p class="h1 head-title">Team Management</p>
         </div>
         <div class="col-md-12 text-center button-container container">
-            <button type="button" id="addGameButton" class="btn btn-primary btn-custom">
-                Add Scrim Team
-            </button>
-            <button type="button" id="createMatchModalButton" class="btn btn-secondary btn-custom">
-                Create Match
-            </button>
-            <button type="button" id="viewGameDataButton" class="btn btn-secondary btn-custom">
-                View Game Data
-            </button>
-            <button type="button" id="showMatchesButton" class="btn btn-secondary btn-custom">
-                Match Results
-            </button>
+            <div class="container">
+                <button type="button" id="addGameButton" class="btn btn-primary btn-lg">
+                    Create Team
+                </button>
+                <button type="button" id="createMatchModalButton" class="btn btn-primary btn-lg">
+                    Create Match
+                </button>
+                <button type="button" id="viewGameDataButton" class="btn btn-primary btn-lg">
+                    View Game Data
+                </button>
+                <button type="button" id="showMatchesButton" class="btn btn-primary btn-lg">
+                    Match Results
+                </button>
+            </div>
         </div>
     </div>
 
@@ -103,7 +115,7 @@
         <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
             <div class="modal-content" style="height: 90vh; overflow-y: auto;">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="matchesModalLabel">Match Results</h5>
+                    <h6 class="modal-title" id="matchesModalLabel">Match Results</h6>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                 </div>
                 <div class="modal-body">
@@ -189,23 +201,27 @@
         <div class="modal-dialog modal-wider modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="viewGameDataModalLabel">View Game Data</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <h6 class="modal-title" id="viewGameDataModalLabel">View Game Data</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                 </div>
-                <div>
-                    <div id="gamePointsTeamA" style="display: inline-block;"></div>
-                    <span style="display: inline-block; margin: 0 10px;">vs</span>
-                    <div id="gamePointsTeamB" style="display: inline-block;"></div>
+                <div class="modal-title">
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+                            <div id="gamePointsTeamA" style="display: inline-block; font-weight: bold;"></div>
+                            <span style="display: inline-block; margin: 0 10px; font-weight: bold;">vs</span>
+                            <div id="gamePointsTeamB" style="display: inline-block; font-weight: bold;"></div>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label for="viewGameDropdown">Game Number:</label>
+                    <div class="form-group mb-3">
+                        <label for="viewGameDropdown" style="font-weight: bold;">Game Number:</label>
                         <select id="viewGameDropdown" class="form-control">
                             
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="quarterDropdown">Quarter:</label>
+                        <label for="quarterDropdown" style="font-weight: bold;">Quarter:</label>
                         <select id="quarterDropdown" class="form-control">
                             <option value="1">1</option>
                             <option value="2">2</option>
@@ -215,7 +231,7 @@
                     </div>
     
                     <div class="table-responsive">
-                        <h5>First Team Data</h5>
+                        <h6 class="text-center" style="margin: 2vh; font-weight: bold;">First Team Data</h6>
                         <div id="firstTeamQuarterMessage" class="alert alert-info" style="display: none;"></div>
                         <table class="table" id="firstTeamQuarterTable">
                             <thead>
@@ -277,7 +293,7 @@
                         </table>
                     </div>
                     <div class="table-responsive">
-                        <h5>Second Team Data</h5>
+                        <h6 class="text-center" style="margin: 2vh; font-weight: bold;">Second Team Data</h6>
                         <div id="secondTeamQuarterMessage" class="alert alert-info" style="display: none;"></div>
                         <table class="table" id="secondTeamQuarterTable">
                             <thead>
@@ -359,13 +375,12 @@
         <div class="modal-dialog modal-xl"> <!-- Use modal-xl class for extra-large modal -->
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Athlete Information</h5>
-                
+                    <h6 class="modal-title" id="exampleModalLabel">Create Team</h6>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group">
+                    <div class="form-group fw-bold">
                         <label for="positionFilter">Filter by Position:</label>
-                        <select id="positionFilter" class="form-control">
+                        <select id="positionFilter" class="form-control fw-bold mb-3">
                             <option value="All">All</option>
                             <option value="PG">PG</option>
                             <option value="SG">SG</option>
@@ -373,12 +388,12 @@
                             <option value="Center">Center</option>
                         </select>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group fw-bold">
                         <label for="searchBar">Search by Name:</label>
-                        <input type="text" id="searchBar" class="form-control" placeholder="Enter athlete name">
-                        <div class="mb-3">
-                            <strong>Selected Athletes:</strong>
-                            <div id="selectedAthletesList" class="d-flex flex-wrap align-items-center"></div>
+                        <input type="text" id="searchBar" class="form-control fw-bold mb-3" placeholder="Enter athlete name">
+                        <div>
+                            <p class="h6 fw-bold">Selected Athletes:</p>
+                            <div id="selectedAthletesList"></div>
                         </div>
                     </div>
                     
@@ -392,11 +407,11 @@
                     </table>
                 </div>
                 <div class="modal-footer">
-                    <div class="row w-100">
+                    <div class="row w-100 fw-bold">
                         <div class="col">
                             <label for="gameDropdown">Team: </label>
-                            <select id="gameDropdown" class="form-control d-inline-block w-auto">
-                                <option value="All">All</option>    
+                            <select id="gameDropdown" class="form-control d-inline-block w-auto fw-bold">
+                                <option value="All" class="fw-bold">All</option>    
                             </select>
                             
                             <!-- <label for="teamDropdown">Team:</label>
@@ -406,13 +421,12 @@
                                 <option value="C">C</option>
                                 <option value="D">D</option>
                             </select> -->
-                            <input type="text" id="teamDropdown" class="form-control d-inline-block w-auto" placeholder="Enter Team Name: ">
+                            <input type="text" id="teamDropdown" class="form-control d-inline-block w-auto fw-bold" placeholder="Enter Team Name: ">
                             <div class="invalid-feedback">Please enter a Team Name</div>
                         </div>
                         <div class="col text-right">
                             <button type="button" id="closeModal" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             <button type="button" id="saveGameButton" class="btn btn-primary">Add PLayer</button>
-                            
                         </div>
                     </div>
                 </div>
@@ -427,17 +441,17 @@
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Athlete Information</h5>
+                    <h6 class="modal-title" id="exampleModalLabel">Athlete Information</h6>
                     <!-- Close button or additional modal header content -->
                 </div>
                 <div class="modal-body">
-                    <input type="text" id="matchName" class="form-control d-inline-block w-auto" placeholder="Enter Match Name">
-                    <label for="matchTeam1">Team 1:</label>
-                    <select id="matchTeam1" class="form-control d-inline-block w-auto">
+                    <input type="text" id="matchName" class="form-control d-inline-block w-auto fw-bold" placeholder="Enter Match Name">
+                    <label for="matchTeam1" class="fw-bold">Team 1:</label>
+                    <select id="matchTeam1" class="form-control d-inline-block w-auto fw-bold">
                         <!-- Populate options dynamically if needed -->
                     </select>
-                    <label for="matchTeam2">Team 2:</label>
-                    <select id="matchTeam2" class="form-control d-inline-block w-auto">
+                    <label for="matchTeam2" class="fw-bold">Team 2:</label>
+                    <select id="matchTeam2" class="form-control d-inline-block w-auto fw-bold">
                         <!-- Populate options dynamically if needed -->
                     </select>
                     <hr>
@@ -446,9 +460,9 @@
                         <!-- Populated dynamically by JavaScript -->
                     </div>
     
-                    <div style="background-color: red;">
+                    <div style="background-color: #040E20;">
                         <hr>
-                            <h1 class="text-center">Vs</h1>
+                            <h1 class="text-center" class="h1" style="color: #ffffff;">vs</h1>
                         <hr>
                     </div>  
     
