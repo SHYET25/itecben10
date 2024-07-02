@@ -13,6 +13,17 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
     <style>
+        body {
+            font-family: "Play";
+            background-color: #040E20;
+        }
+        .h1, .h3 {
+            color: #ffffff;
+        }
+
+        .head-title {
+            font-size: 4rem;
+        }
         .selected-athlete-item {
             display: inline-flex;
             align-items: center;
@@ -21,6 +32,9 @@
             border-radius: 5px;
             margin-right: 10px;
             margin-bottom: 10px;
+        }
+        .row {
+            margin-top: 5vh;
         }
 
         .selected-athlete-item .athlete-info {
@@ -40,315 +54,317 @@
             background-color: red; /* Adjust this color as per your design */
         }
 
-        .modal-dialog.modal-wider {
+        .modal-dialog .modal-wider {
             max-width: 95%;
         }
 
         .table th, .table td {
             text-align: center;
             vertical-align: middle;
+            font-weight: bold;
         }
 
         .table thead th {
             background-color: #007bff;
             color: white;
-        }
 
-        .btn-custom {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            margin: 5px;
-        }
-
-        .btn-custom:hover {
-            background-color: #0056b3;
         }
         
         .gradient-bg {
-            background: linear-gradient(to right, green, red);
+            background: linear-gradient(to right, rgb(75, 230, 75), rgb(240, 50, 50));
         }
-        
-        
+
+        .modal-title {
+            color: #040E20;
+            font-size: 3rem;
+            font-weight: bold;
+        }
+
+        .btn-lg {
+            margin: 1vw;
+            width: 15rem;
+        }
+
     </style>
 </head>
 <body>
     <div class="row">
-        <div class="col-md-12">
-            <button type="button" id="addGameButton" class="btn btn-primary">
-                Add Scrim Team
-            </button>
-            <button type="button" id="viewGameDataButton" class="btn btn-secondary">
-                View Game Data
-            </button>
-            <button type="button" id="createMatchModalButton" class="btn btn-secondary">
-                Create Match
-            </button>
-            <button type="button" id="showMatchesButton" class="btn btn-secondary">
-                Match Results
-            </button>
-            
+        <div class="col-md-12 text-center">
+            <p class="h1 head-title">Team Management</p>
         </div>
-    </div>
-
-    <!--  match results -->
-
-
-<!-- Modal -->
-    <!-- Button to trigger modal -->
-
-<!-- Modal -->
-<div class="modal fade" id="matchesModal" tabindex="-1" role="dialog" aria-labelledby="matchesModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
-        <div class="modal-content" style="height: 90vh; overflow-y: auto;">
-            <div class="modal-header">
-                <h5 class="modal-title" id="matchesModalLabel">Match Results</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+        <div class="col-md-12 text-center button-container container">
+            <div class="container">
+                <button type="button" id="addGameButton" class="btn btn-primary btn-lg">
+                    Create Team
+                </button>
+                <button type="button" id="createMatchModalButton" class="btn btn-primary btn-lg">
+                    Create Match
+                </button>
+                <button type="button" id="viewGameDataButton" class="btn btn-primary btn-lg">
+                    View Game Data
+                </button>
+                <button type="button" id="showMatchesButton" class="btn btn-primary btn-lg">
+                    Match Results
                 </button>
             </div>
-            <div class="modal-body">
-                <div class="row" id="matchResultsContainer">
-                    <!-- Match results will be dynamically populated here -->
+        </div>
+    </div>
+
+    <!-- Modal Match Results-->
+    <div class="modal fade" id="matchesModal" tabindex="-1" role="dialog" aria-labelledby="matchesModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content" style="height: 90vh; overflow-y: auto;">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="matchesModalLabel">Match Results</h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                 </div>
-                <!-- Game details tables -->
-                <div id="gameDetails" class="collapse mt-4">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h5>Team 1 Game Details</h5>
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>Quarter</th>
-                                        <th>Points</th>
-                                        <th>2FGM</th>
-                                        <th>3FGM</th>
-                                        <th>FTM</th>
-                                        <th>2PTS</th>
-                                        <th>3PTS</th>
-                                        <th>FTPTS</th>
-                                        <th>2FGA</th>
-                                        <th>3FGA</th>
-                                        <th>FTA</th>
-                                        <th>ASS</th>
-                                        <th>BLOCK</th>
-                                        <th>STEAL</th>
-                                        <th>OFREB</th>
-                                        <th>DEFREB</th>
-                                        <th>TURN</th>
-                                        <th>FOUL</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="firstTableBody">
-                                    <!-- Data will be populated dynamically -->
-                                </tbody>
-                            </table>
-                        </div>
+                <div class="modal-body">
+                    <div class="row" id="matchResultsContainer">
+                        <!-- Match results will be dynamically populated here -->
                     </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h5>Team 2 Game Details</h5>
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>Quarter</th>
-                                        <th>Points</th>
-                                        <th>2FGM</th>
-                                        <th>3FGM</th>
-                                        <th>FTM</th>
-                                        <th>2PTS</th>
-                                        <th>3PTS</th>
-                                        <th>FTPTS</th>
-                                        <th>2FGA</th>
-                                        <th>3FGA</th>
-                                        <th>FTA</th>
-                                        <th>ASS</th>
-                                        <th>BLOCK</th>
-                                        <th>STEAL</th>
-                                        <th>OFREB</th>
-                                        <th>DEFREB</th>
-                                        <th>TURN</th>
-                                        <th>FOUL</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="secondTableBody">
-                                    <!-- Data will be populated dynamically -->
-                                </tbody>
-                            </table>
+                    <!-- Game details tables -->
+                    <div id="gameDetails" class="collapse mt-4">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5>Team 1 Game Details</h5>
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Quarter</th>
+                                            <th>Points</th>
+                                            <th>2FGM</th>
+                                            <th>3FGM</th>
+                                            <th>FTM</th>
+                                            <th>2PTS</th>
+                                            <th>3PTS</th>
+                                            <th>FTPTS</th>
+                                            <th>2FGA</th>
+                                            <th>3FGA</th>
+                                            <th>FTA</th>
+                                            <th>ASS</th>
+                                            <th>BLOCK</th>
+                                            <th>STEAL</th>
+                                            <th>OFREB</th>
+                                            <th>DEFREB</th>
+                                            <th>TURN</th>
+                                            <th>FOUL</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="firstTableBody">
+                                        <!-- Data will be populated dynamically -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5>Team 2 Game Details</h5>
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Quarter</th>
+                                            <th>Points</th>
+                                            <th>2FGM</th>
+                                            <th>3FGM</th>
+                                            <th>FTM</th>
+                                            <th>2PTS</th>
+                                            <th>3PTS</th>
+                                            <th>FTPTS</th>
+                                            <th>2FGA</th>
+                                            <th>3FGA</th>
+                                            <th>FTA</th>
+                                            <th>ASS</th>
+                                            <th>BLOCK</th>
+                                            <th>STEAL</th>
+                                            <th>OFREB</th>
+                                            <th>DEFREB</th>
+                                            <th>TURN</th>
+                                            <th>FOUL</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="secondTableBody">
+                                        <!-- Data will be populated dynamically -->
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
 
     
-        <!-- View Game Data Modal -->
-        <div class="modal fade" id="viewGameDataModal" tabindex="-1" aria-labelledby="viewGameDataModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-wider modal-xl">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="viewGameDataModalLabel">View Game Data</h5>
+    <!-- View Game Data Modal -->
+    <div class="modal fade" id="viewGameDataModal" tabindex="-1" aria-labelledby="viewGameDataModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-wider modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="viewGameDataModalLabel">View Game Data</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                </div>
+                <div class="modal-title">
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+                            <div id="gamePointsTeamA" style="display: inline-block; font-weight: bold;"></div>
+                            <span style="display: inline-block; margin: 0 10px; font-weight: bold;">vs</span>
+                            <div id="gamePointsTeamB" style="display: inline-block; font-weight: bold;"></div>
+                        </div>
                     </div>
-                    <div>
-                        <div id="gamePointsTeamA" style="display: inline-block;"></div>
-                        <span style="display: inline-block; margin: 0 10px;">vs</span>
-                        <div id="gamePointsTeamB" style="display: inline-block;"></div>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group mb-3">
+                        <label for="viewGameDropdown" style="font-weight: bold;">Game Number:</label>
+                        <select id="viewGameDropdown" class="form-control">
+                            
+                        </select>
                     </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="viewGameDropdown">Game Number:</label>
-                            <select id="viewGameDropdown" class="form-control">
-                                
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="quarterDropdown">Quarter:</label>
-                            <select id="quarterDropdown" class="form-control">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                            </select>
-                        </div>
-        
-                        <div class="table-responsive">
-                            <h5>First Team Data</h5>
-                            <div id="firstTeamQuarterMessage" class="alert alert-info" style="display: none;"></div>
-                            <table class="table" id="firstTeamQuarterTable">
-                                <thead>
-                                    <tr>
-                                        <th>Points</th>
-                                        <th>2FG Made</th>
-                                        <th>3FG Made</th>
-                                        <th>FT Made</th>
-                                        <th>2Pts</th>
-                                        <th>3Pts</th>
-                                        <th>FT Points</th>
-                                        <th>2FG Attempts</th>
-                                        <th>3FG Attempts</th>
-                                        <th>FT Attempts</th>
-                                        <th>Assists</th>
-                                        <th>Blocks</th>
-                                        <th>Steals</th>
-                                        <th>Offensive Rebounds</th>
-                                        <th>Defensive Rebounds</th>
-                                        <th>Turnovers</th>
-                                        <th>Fouls</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <!-- Data will be dynamically populated here -->
-                                </tbody>
-                            </table>
-                            <div id="firstTeamTableMessage" class="alert alert-info" style="display: none;"></div>
-                            <table class="table" id="firstTeamTable">
-                                <thead>
-                                    <tr>
-                                        <th>Athlete ID</th>
-                                        <th>Game ID</th>
-                                        <th>Points</th>
-                                        <th>2FGM</th>
-                                        <th>2PTS</th>
-                                        <th>3FGM</th>
-                                        <th>3PTS</th>
-                                        <th>FTM</th>
-                                        <th>FTPTS</th>
-                                        <th>2FGMSD</th>
-                                        <th>3FGMSD</th>
-                                        <th>FTMSD</th>
-                                        <th>Assists</th>
-                                        <th>Blocks</th>
-                                        <th>Steals</th>
-                                        <th>O. Rebounds</th>
-                                        <th>D. Rebounds</th>
-                                        <th>Turnovers</th>
-                                        <th>Fouls</th>
-                                        <th>Quarter</th>
-                                        <th>Game</th>
-                                        <th>Team</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <!-- Data will be populated dynamically -->
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="table-responsive">
-                            <h5>Second Team Data</h5>
-                            <div id="secondTeamQuarterMessage" class="alert alert-info" style="display: none;"></div>
-                            <table class="table" id="secondTeamQuarterTable">
-                                <thead>
-                                    <tr>
-                                        <th>Points</th>
-                                        <th>2FG Made</th>
-                                        <th>3FG Made</th>
-                                        <th>FT Made</th>
-                                        <th>2Pts</th>
-                                        <th>3Pts</th>
-                                        <th>FT Points</th>
-                                        <th>2FG Attempts</th>
-                                        <th>3FG Attempts</th>
-                                        <th>FT Attempts</th>
-                                        <th>Assists</th>
-                                        <th>Blocks</th>
-                                        <th>Steals</th>
-                                        <th>Offensive Rebounds</th>
-                                        <th>Defensive Rebounds</th>
-                                        <th>Turnovers</th>
-                                        <th>Fouls</th>
-                                        
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <!-- Data will be dynamically populated here -->
-                                </tbody>
-                            </table>
+                    <div class="form-group">
+                        <label for="quarterDropdown" style="font-weight: bold;">Quarter:</label>
+                        <select id="quarterDropdown" class="form-control">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                        </select>
+                    </div>
+    
+                    <div class="table-responsive">
+                        <h6 class="text-center" style="margin: 2vh; font-weight: bold;">First Team Data</h6>
+                        <div id="firstTeamQuarterMessage" class="alert alert-info" style="display: none;"></div>
+                        <table class="table" id="firstTeamQuarterTable">
+                            <thead>
+                                <tr>
+                                    <th>Points</th>
+                                    <th>2FG Made</th>
+                                    <th>3FG Made</th>
+                                    <th>FT Made</th>
+                                    <th>2Pts</th>
+                                    <th>3Pts</th>
+                                    <th>FT Points</th>
+                                    <th>2FG Attempts</th>
+                                    <th>3FG Attempts</th>
+                                    <th>FT Attempts</th>
+                                    <th>Assists</th>
+                                    <th>Blocks</th>
+                                    <th>Steals</th>
+                                    <th>Offensive Rebounds</th>
+                                    <th>Defensive Rebounds</th>
+                                    <th>Turnovers</th>
+                                    <th>Fouls</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Data will be dynamically populated here -->
+                            </tbody>
+                        </table>
+                        <div id="firstTeamTableMessage" class="alert alert-info" style="display: none;"></div>
+                        <table class="table" id="firstTeamTable">
+                            <thead>
+                                <tr>
+                                    <th>Athlete ID</th>
+                                    <th>Game ID</th>
+                                    <th>Points</th>
+                                    <th>2FGM</th>
+                                    <th>2PTS</th>
+                                    <th>3FGM</th>
+                                    <th>3PTS</th>
+                                    <th>FTM</th>
+                                    <th>FTPTS</th>
+                                    <th>2FGMSD</th>
+                                    <th>3FGMSD</th>
+                                    <th>FTMSD</th>
+                                    <th>Assists</th>
+                                    <th>Blocks</th>
+                                    <th>Steals</th>
+                                    <th>O. Rebounds</th>
+                                    <th>D. Rebounds</th>
+                                    <th>Turnovers</th>
+                                    <th>Fouls</th>
+                                    <th>Quarter</th>
+                                    <th>Game</th>
+                                    <th>Team</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Data will be populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="table-responsive">
+                        <h6 class="text-center" style="margin: 2vh; font-weight: bold;">Second Team Data</h6>
+                        <div id="secondTeamQuarterMessage" class="alert alert-info" style="display: none;"></div>
+                        <table class="table" id="secondTeamQuarterTable">
+                            <thead>
+                                <tr>
+                                    <th>Points</th>
+                                    <th>2FG Made</th>
+                                    <th>3FG Made</th>
+                                    <th>FT Made</th>
+                                    <th>2Pts</th>
+                                    <th>3Pts</th>
+                                    <th>FT Points</th>
+                                    <th>2FG Attempts</th>
+                                    <th>3FG Attempts</th>
+                                    <th>FT Attempts</th>
+                                    <th>Assists</th>
+                                    <th>Blocks</th>
+                                    <th>Steals</th>
+                                    <th>Offensive Rebounds</th>
+                                    <th>Defensive Rebounds</th>
+                                    <th>Turnovers</th>
+                                    <th>Fouls</th>
+                                    
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Data will be dynamically populated here -->
+                            </tbody>
+                        </table>
 
-                            <div id="secondTeamTableMessage" class="alert alert-info" style="display: none;"></div>
-                            <table class="table" id="secondTeamTable">
-                                <thead>
-                                    <tr>
-                                        <th>Athlete ID</th>
-                                        <th>Game ID</th>
-                                        <th>Points</th>
-                                        <th>2FGM</th>
-                                        <th>2PTS</th>
-                                        <th>3FGM</th>
-                                        <th>3PTS</th>
-                                        <th>FTM</th>
-                                        <th>FTPTS</th>
-                                        <th>2FGMSD</th>
-                                        <th>3FGMSD</th>
-                                        <th>FTMSD</th>
-                                        <th>Assists</th>
-                                        <th>Blocks</th>
-                                        <th>Steals</th>
-                                        <th>O. Rebounds</th>
-                                        <th>D. Rebounds</th>
-                                        <th>Turnovers</th>
-                                        <th>Fouls</th>
-                                        <th>Quarter</th>
-                                        <th>Game</th>
-                                        <th>Team</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <!-- Data will be populated dynamically -->
-                                </tbody>
-                            </table>
-                        </div>
-        
+                        <div id="secondTeamTableMessage" class="alert alert-info" style="display: none;"></div>
+                        <table class="table" id="secondTeamTable">
+                            <thead>
+                                <tr>
+                                    <th>Athlete ID</th>
+                                    <th>Game ID</th>
+                                    <th>Points</th>
+                                    <th>2FGM</th>
+                                    <th>2PTS</th>
+                                    <th>3FGM</th>
+                                    <th>3PTS</th>
+                                    <th>FTM</th>
+                                    <th>FTPTS</th>
+                                    <th>2FGMSD</th>
+                                    <th>3FGMSD</th>
+                                    <th>FTMSD</th>
+                                    <th>Assists</th>
+                                    <th>Blocks</th>
+                                    <th>Steals</th>
+                                    <th>O. Rebounds</th>
+                                    <th>D. Rebounds</th>
+                                    <th>Turnovers</th>
+                                    <th>Fouls</th>
+                                    <th>Quarter</th>
+                                    <th>Game</th>
+                                    <th>Team</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Data will be populated dynamically -->
+                            </tbody>
+                        </table>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" id ="finalizedGameButton" class="btn btn-primary">Finalized Game</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    </div>
+    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id ="finalizedGameButton" class="btn btn-primary">Finalized Game</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
+    </div>
         
         
         
@@ -359,13 +375,12 @@
         <div class="modal-dialog modal-xl"> <!-- Use modal-xl class for extra-large modal -->
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Athlete Information</h5>
-                
+                    <h6 class="modal-title" id="exampleModalLabel">Create Team</h6>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group">
+                    <div class="form-group fw-bold">
                         <label for="positionFilter">Filter by Position:</label>
-                        <select id="positionFilter" class="form-control">
+                        <select id="positionFilter" class="form-control fw-bold mb-3">
                             <option value="All">All</option>
                             <option value="PG">PG</option>
                             <option value="SG">SG</option>
@@ -373,12 +388,12 @@
                             <option value="Center">Center</option>
                         </select>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group fw-bold">
                         <label for="searchBar">Search by Name:</label>
-                        <input type="text" id="searchBar" class="form-control" placeholder="Enter athlete name">
-                        <div class="mb-3">
-                            <strong>Selected Athletes:</strong>
-                            <div id="selectedAthletesList" class="d-flex flex-wrap align-items-center"></div>
+                        <input type="text" id="searchBar" class="form-control fw-bold mb-3" placeholder="Enter athlete name">
+                        <div>
+                            <p class="h6 fw-bold">Selected Athletes:</p>
+                            <div id="selectedAthletesList"></div>
                         </div>
                     </div>
                     
@@ -392,11 +407,11 @@
                     </table>
                 </div>
                 <div class="modal-footer">
-                    <div class="row w-100">
+                    <div class="row w-100 fw-bold">
                         <div class="col">
                             <label for="gameDropdown">Team: </label>
-                            <select id="gameDropdown" class="form-control d-inline-block w-auto">
-                                <option value="All">All</option>    
+                            <select id="gameDropdown" class="form-control d-inline-block w-auto fw-bold">
+                                <option value="All" class="fw-bold">All</option>    
                             </select>
                             
                             <!-- <label for="teamDropdown">Team:</label>
@@ -406,13 +421,12 @@
                                 <option value="C">C</option>
                                 <option value="D">D</option>
                             </select> -->
-                            <input type="text" id="teamDropdown" class="form-control d-inline-block w-auto" placeholder="Enter Team Name: ">
+                            <input type="text" id="teamDropdown" class="form-control d-inline-block w-auto fw-bold" placeholder="Enter Team Name: ">
                             <div class="invalid-feedback">Please enter a Team Name</div>
                         </div>
                         <div class="col text-right">
                             <button type="button" id="closeModal" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             <button type="button" id="saveGameButton" class="btn btn-primary">Add PLayer</button>
-                            
                         </div>
                     </div>
                 </div>
@@ -420,21 +434,24 @@
         </div>
     </div>
 
+
+
+    <!-- Modal Athlete Information -->
     <div class="modal fade" id="createMatchModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Athlete Information</h5>
+                    <h6 class="modal-title" id="exampleModalLabel">Athlete Information</h6>
                     <!-- Close button or additional modal header content -->
                 </div>
                 <div class="modal-body">
-                    <input type="text" id="matchName" class="form-control d-inline-block w-auto" placeholder="Enter Match Name">
-                    <label for="matchTeam1">Team 1:</label>
-                    <select id="matchTeam1" class="form-control d-inline-block w-auto">
+                    <input type="text" id="matchName" class="form-control d-inline-block w-auto fw-bold" placeholder="Enter Match Name">
+                    <label for="matchTeam1" class="fw-bold">Team 1:</label>
+                    <select id="matchTeam1" class="form-control d-inline-block w-auto fw-bold">
                         <!-- Populate options dynamically if needed -->
                     </select>
-                    <label for="matchTeam2">Team 2:</label>
-                    <select id="matchTeam2" class="form-control d-inline-block w-auto">
+                    <label for="matchTeam2" class="fw-bold">Team 2:</label>
+                    <select id="matchTeam2" class="form-control d-inline-block w-auto fw-bold">
                         <!-- Populate options dynamically if needed -->
                     </select>
                     <hr>
@@ -443,9 +460,9 @@
                         <!-- Populated dynamically by JavaScript -->
                     </div>
     
-                    <div style="background-color: red;">
+                    <div style="background-color: #040E20;">
                         <hr>
-                            <h1 class="text-center">Vs</h1>
+                            <h1 class="text-center" class="h1" style="color: #ffffff;">vs</h1>
                         <hr>
                     </div>  
     
