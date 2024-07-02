@@ -63,43 +63,36 @@
             background-color: #007bff;
             color: white;
         }
+        
+        .gradient-bg {
+            background: linear-gradient(to right, green, red);
+        }
 
         .btn-custom {
             background-color: #007bff;
             color: white;
             border: none;
             margin: 5px;
-        }
-
-        .btn-custom:hover {
-            background-color: #0056b3;
-        }
-        
-        .gradient-bg {
-            background: linear-gradient(to right, green, red);
-        }
-
-        .modal {
-            background-color: #040E20;
+            width: 20vw; /* Set width to 20% of viewport width */
         }
     </style>
 </head>
 <body>
     <div class="row">
         <div class="col-md-12 text-center">
-            <p class="h1">Team Managment</p>
+            <p class="h1">Team Management</p>
         </div>
-        <div class="col-md-12 text-center"> <!-- Centering buttons -->
-            <button type="button" id="addGameButton" class="btn btn-primary">
+        <div class="col-md-12 text-center button-container container">
+            <button type="button" id="addGameButton" class="btn btn-primary btn-custom">
                 Add Scrim Team
             </button>
-            <button type="button" id="viewGameDataButton" class="btn btn-secondary">
-                View Game Data
-            </button>
-            <button type="button" id="createMatchModalButton" class="btn btn-secondary">
+            <button type="button" id="createMatchModalButton" class="btn btn-secondary btn-custom">
                 Create Match
             </button>
-            <button type="button" id="showMatchesButton" class="btn btn-secondary">
+            <button type="button" id="viewGameDataButton" class="btn btn-secondary btn-custom">
+                View Game Data
+            </button>
+            <button type="button" id="showMatchesButton" class="btn btn-secondary btn-custom">
                 Match Results
             </button>
         </div>
