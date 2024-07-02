@@ -125,6 +125,62 @@ $(document).ready(function() {
         });
     }
 
+
+    function fetchAthletesDataHome(position = 'All', name = '') {
+        
+        $.ajax({
+            type: "GET",
+            url: "phpFile/buttonFunctions/fetchAthletesHome.php",
+            data: { position: position, name: name},
+            dataType: 'json',
+            success: function(response) {
+                if (response.status === 'success') {
+                    populateAthleteTableHome(response.data);
+                } else {
+                    console.error('Error:', response.message);
+                }
+            },
+            error: handleAjaxError
+        });
+    }
+
+    // Populate athlete table with data
+    function populateAthleteTableHome(data) {
+        var athleteTableBody = $('#athleteTableBodyHome');
+        athleteTableBody.empty();
+        var athletesPerColumn = Math.ceil(data.length / 2);
+        var column1 = $('<div class="col-md-6"></div>');
+        var column2 = $('<div class="col-md-6"></div>');
+
+        data.forEach(function(athlete, index) {
+            var card = `<div class="card mb-3" style="max-width: 100%;">
+                            <div class="row no-gutters">
+                                <div class="col-md-4">
+                                    <img src="${athlete.ath_img}" class="card-img" alt="Athlete Image">
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <p class="card-title h5">${athlete.ath_name}</p>
+                                        <p class="card-text h6"><strong>Position:</strong> ${athlete.ath_position}</p>
+                                        <p class="card-text h6"><strong>ID:</strong> ${athlete.AthleteID}</p>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`;
+            var $card = $(card);
+            if (index < athletesPerColumn) {
+                column1.append($card);
+            } else {
+                column2.append($card);
+            }
+            
+        });
+        athleteTableBody.append($('<div class="row"></div>').append(column1, column2));
+    }
+    
+
+
     // Update the display of selected athletes
     function updateSelectedAthletesDisplay() {
         var selectedAthletesList = $('#selectedAthletesList');
@@ -175,6 +231,7 @@ $(document).ready(function() {
                         selectedAthletes = [];
                         updateSelectedAthletesDisplay();
                         fetchAthletesData($('#positionFilter').val(), $('#searchBar').val());
+                        
                         populateDropdown();
                     } else {
                         console.error('Error:', response.message);
@@ -189,6 +246,7 @@ $(document).ready(function() {
     // Event bindings
     $('#addGameButton').click(function() {
         fetchAthletesData();
+
         $('#gameModal').modal('show');
     });
 
@@ -197,11 +255,22 @@ $(document).ready(function() {
     });
 
     $('#positionFilter').change(function() {
-        fetchAthletesData($(this).val(), $('#searchBar').val());
+
+        fetchAthletesData($('#positionFilter').val(), $('#searchBar').val());
+    });
+
+    $('#positionFilterHome').change(function() {
+
+        fetchAthletesDataHome($('#positionFilterHome').val(), $('#searchBarHome').val());
     });
 
     $('#searchBar').on('input', function() {
         fetchAthletesData($('#positionFilter').val(), $(this).val());
+    });
+
+    $('#searchBarHome').on('input', function() {
+        fetchAthletesDataHome($('#positionFilterHome').val(), $(this).val());
+
     });
 
     $('#gameDropdown').change(function() {
@@ -219,6 +288,7 @@ $(document).ready(function() {
     fetchLoggedInUserData();
     populateDropdown();
     fetchAthletesData();
+    fetchAthletesDataHome();
 
     // ADD SCRIM TEAM------------------------------------------------------------------------------------------------------------
     

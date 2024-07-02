@@ -23,7 +23,7 @@ if (isset($_GET['match_id']) && isset($_GET['team'])) {
     
             $stmt = $conn->prepare($sql);
             if ($stmt) {
-                $stmt->bind_param("is", $bball_match_id, $team);
+                $stmt->bind_param("si", $bball_match_id, $team);
                 
                 if ($stmt->execute()) {
                     $result = $stmt->get_result();
