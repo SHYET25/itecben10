@@ -14,9 +14,9 @@ if (isset($_SESSION['coach_email'])) {
         $coachSport = $coachData['coach_sport'];
 
         // Ensure game_number is set and valid
-        $game_number = isset($_GET['game_number']) ? intval($_GET['game_number']) : 0;
+        $game_number = isset($_GET['game_number']) ? $_GET['game_number'] : '';
 
-        if ($game_number <= 0) {
+        if (empty($game_number)) {
             echo json_encode(['status' => 'error', 'message' => 'Invalid game number']);
             exit();
         }
@@ -25,39 +25,39 @@ if (isset($_SESSION['coach_email'])) {
         $name = isset($_GET['name']) ? $_GET['name'] : '';
 
         if ($position === 'All' && $name === '') {
-            $stmt = $conn->prepare("SELECT AthleteID, ath_name, ath_position, 
-                CASE WHEN EXISTS (SELECT 1 FROM basketball_game_tracking 
-                                  WHERE ath_bball_player_id = athlete_info.AthleteID 
-                                  AND game_number = ?) THEN 1 ELSE 0 END as disabled 
+            $stmt = $conn->prepare("SELECT AthleteID, ath_name, ath_position,
+                CASE WHEN EXISTS (SELECT 1 FROM basketball_teams 
+                                  WHERE ath_id = athlete_info.AthleteID 
+                                  AND ath_team = ?) THEN 1 ELSE 0 END as disabled 
                 FROM athlete_info 
                 WHERE ath_sport = ?");
-            $stmt->bind_param("is", $game_number, $coachSport);
+            $stmt->bind_param("ss", $game_number, $coachSport);
         } elseif ($position === 'All') {
-            $stmt = $conn->prepare("SELECT AthleteID, ath_name, ath_position, 
-                CASE WHEN EXISTS (SELECT 1 FROM basketball_game_tracking 
-                                  WHERE ath_bball_player_id = athlete_info.AthleteID 
-                                  AND game_number = ?) THEN 1 ELSE 0 END as disabled 
+            $stmt = $conn->prepare("SELECT AthleteID, ath_name, ath_position,
+                CASE WHEN EXISTS (SELECT 1 FROM basketball_teams 
+                                  WHERE ath_id = athlete_info.AthleteID 
+                                  AND ath_team = ?) THEN 1 ELSE 0 END as disabled 
                 FROM athlete_info 
                 WHERE ath_sport = ? AND ath_name LIKE ?");
             $name = '%' . $name . '%';
-            $stmt->bind_param("iss", $game_number, $coachSport, $name);
+            $stmt->bind_param("sss", $game_number, $coachSport, $name);
         } elseif ($name === '') {
             $stmt = $conn->prepare("SELECT AthleteID, ath_name, ath_position, 
-                CASE WHEN EXISTS (SELECT 1 FROM basketball_game_tracking 
-                                  WHERE ath_bball_player_id = athlete_info.AthleteID 
-                                  AND game_number = ?) THEN 1 ELSE 0 END as disabled 
+                CASE WHEN EXISTS (SELECT 1 FROM basketball_teams 
+                                  WHERE ath_id = athlete_info.AthleteID 
+                                  AND ath_team = ?) THEN 1 ELSE 0 END as disabled 
                 FROM athlete_info 
                 WHERE ath_sport = ? AND ath_position = ?");
-            $stmt->bind_param("iss", $game_number, $coachSport, $position);
+            $stmt->bind_param("sss", $game_number, $coachSport, $position);
         } else {
-            $stmt = $conn->prepare("SELECT AthleteID, ath_name, ath_position, 
-                CASE WHEN EXISTS (SELECT 1 FROM basketball_game_tracking 
-                                  WHERE ath_bball_player_id = athlete_info.AthleteID 
-                                  AND game_number = ?) THEN 1 ELSE 0 END as disabled 
+            $stmt = $conn->prepare("SELECT AthleteID, ath_name, ath_position,
+                CASE WHEN EXISTS (SELECT 1 FROM basketball_teams 
+                                  WHERE ath_id = athlete_info.AthleteID 
+                                  AND ath_team = ?) THEN 1 ELSE 0 END as disabled 
                 FROM athlete_info 
                 WHERE ath_sport = ? AND ath_position = ? AND ath_name LIKE ?");
             $name = '%' . $name . '%';
-            $stmt->bind_param("isss", $game_number, $coachSport, $position, $name);
+            $stmt->bind_param("ssss", $game_number, $coachSport, $position, $name);
         }
 
         $stmt->execute();
