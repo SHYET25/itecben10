@@ -2,7 +2,7 @@
 include '../connection/connection.php'; // Include your database connection file
 
 // Perform query to fetch match_name values
-$stmt = $conn->prepare("SELECT `match_name` FROM `basketball_matches`");
+$stmt = $conn->prepare("SELECT `match_name` FROM `basketball_match_name`");
 $stmt->execute();
 $result = $stmt->get_result();
 

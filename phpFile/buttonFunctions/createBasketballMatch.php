@@ -11,8 +11,20 @@ if (isset($_POST['match_name']) && isset($_POST['team1']) && isset($_POST['team2
     $match_lose = $_POST['match_lose'];
     $athletes = $_POST['athletes'];
 
+
+    $stmt_check = $conn->prepare("SELECT match_id FROM basketball_match_name WHERE match_name = ?");
+    $stmt_check->bind_param("s", $matchName);
+    $stmt_check->execute();
+    $stmt_check->store_result();
+    if ($stmt_check->num_rows > 0) {
+        echo json_encode(['status' => 'error', 'message' => 'Match name already exists (Finalize the match First..)']);
+        exit();
+    }
+    $stmt_check->close();
+
     // Begin transaction
     $conn->begin_transaction();
+    // Begin transaction
 
     try {
         // Insert into basketball_matches
@@ -27,11 +39,19 @@ if (isset($_POST['match_name']) && isset($_POST['team1']) && isset($_POST['team2
         $matchId = $stmt->insert_id;
         $stmt->close();
 
+        // Insert into basketball_match_name
+        $stmt_match_name = $conn->prepare("INSERT INTO basketball_match_name(match_id, match_name) VALUES (?, ?)");
+        $stmt_match_name->bind_param("is", $matchId, $matchName);
+        if (!$stmt_match_name->execute()) {
+            throw new Exception('Failed to insert match name');
+        }
+        $stmt_match_name->close();
+
         // Prepare insert statement for basketball_game_tracking
         $stmt = $conn->prepare("INSERT INTO basketball_game_tracking(match_id, ath_bball_player_id, game_pts, game_2fgm, game_2pts, game_3fgm, game_3pts, game_ftm, game_ftpts, game_2fga, game_3fga, game_fta, game_ass, game_block, game_steal, game_ofreb, game_defreb, game_turn, game_foul, game_quarter, game_number, game_team) VALUES (?, ?, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ?, 1, ?)");
         
         // Prepare insert statement for basketball_matches_quarters
-        $stmt_quarters = $conn->prepare("INSERT INTO basketball_matches_quarters(match_id, game_quarter, game_team, game_points, game_2fgm, game_3fgm, game_ftm, game_2pts, game_3pts, game_ftpts, game_2fga, game_3fga, game_fta, game_ass, game_block, game_steal, game_ofreb, game_defreb, game_turn, game_foul) VALUES (?, ?, ?, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)");
+        $stmt_quarters = $conn->prepare("INSERT INTO basketball_matches_quarters(match_id, game_quarter, game_team, game_points, game_2fgm, game_3fgm, game_ftm, game_2pts, game_3pts, game_ftpts, game_2fga, game_3fga, game_fta, game_ass, game_block, game_steal, game_ofreb, game_defreb, game_turn, game_foul) VALUES (?, ?, ?, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0)");
 
         // Insert each athlete for each quarter
         foreach ($athletes as $athlete) {

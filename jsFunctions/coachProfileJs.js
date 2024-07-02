@@ -170,7 +170,7 @@ $(document).ready(function() {
                 dataType: 'json',
                 success: function(response) {
                     if (response.status === 'success') {
-                        alert('Game data saved for athlete: ' + athlete.ath_name);
+                        confirm('Game data saved for athlete: ' + athlete.ath_name);
                         selectedAthletes = [];
                         updateSelectedAthletesDisplay();
                         fetchAthletesData($('#positionFilter').val(), $('#searchBar').val());
@@ -252,6 +252,7 @@ $(document).ready(function() {
 
                 } else {
                     console.error('Error fetching teams:', response.message);
+                    alert('Create a Match First!');
                     // Handle error case if needed
                 }
             },
@@ -296,6 +297,137 @@ $(document).ready(function() {
             }
         });
     });
+
+    $(document).ready(function() {
+        $('#finalizedGameButton').click(function() {
+            var gameNumber = $('#viewGameDropdown').val();
+    
+            // Fetch teams dynamically based on gameNumber
+            $.ajax({
+                type: "GET",
+                url: "phpFile/buttonFunctions/fetchTeam12.php",
+                data: { game_number: gameNumber },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.status === 'success') {
+                        var firstTeam = response.data.team_1;
+                        var secondTeam = response.data.team_2;
+    
+                        // Ask for confirmation before proceeding
+                        var confirmFinalize = confirm('Do you want to finalize this game?');
+                        if (confirmFinalize) {
+                            fetchFinalizeGame(gameNumber, firstTeam, secondTeam);
+                            window.location.reload();
+                        } else {
+                            console.log('Finalization cancelled.');
+                        }
+                    } else {
+                        console.error('Error fetching teams:', response.message);
+                        // Handle error case if needed
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('AJAX Error fetching teams:', error);
+                    // Handle AJAX error
+                }
+            });
+        });
+    
+        function fetchFinalizeGame(gameNumber, firstTeam, secondTeam) {
+            // Function to update the finalized data
+            function updateFinalizedData(firstTeamData, secondTeamData) {
+                // Log the first team's name and points
+                console.log('First Team:', firstTeamData.game_team);
+                console.log('First Team Points:', firstTeamData.game_pts);
+    
+                // Log the second team's name and points
+                console.log('Second Team:', secondTeamData.game_team);
+                console.log('Second Team Points:', secondTeamData.game_pts);
+    
+                // Determine match win and lose
+                var matchWin, matchLose;
+                if (firstTeamData.game_pts > secondTeamData.game_pts) {
+                    matchWin = firstTeamData.game_team;
+                    matchLose = secondTeamData.game_team;
+                } else {
+                    matchWin = secondTeamData.game_team;
+                    matchLose = firstTeamData.game_team;
+                }
+    
+                // Prepare data for the update
+                var updateData = {
+                    game_number: gameNumber,
+                    first_team: firstTeamData.game_team,
+                    first_team_score: firstTeamData.game_pts,
+                    second_team: secondTeamData.game_team,
+                    second_team_score: secondTeamData.game_pts,
+                    match_win: matchWin,
+                    match_lose: matchLose
+                };
+    
+                // Send AJAX request to update the database
+                $.ajax({
+                    type: "POST",
+                    url: "phpFile/buttonFunctions/updateMatchWin.php",
+                    data: updateData,
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.status === 'success') {
+                            console.log('Match result updated successfully');
+                        } else {
+                            console.error('Error updating match result:', response.message);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('AJAX Error updating match result:', xhr.responseText);
+                    }
+                });
+            }
+    
+            // Fetch data for the first team
+            $.ajax({
+                type: "GET",
+                url: "phpFile/buttonFunctions/fetchFinalizedData.php",
+                data: { game_number: gameNumber, team: firstTeam },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.status === 'success') {
+                        // Process the first team's data
+                        var firstTeamData = response.data;
+    
+                        // Fetch data for the second team
+                        $.ajax({
+                            type: "GET",
+                            url: "phpFile/buttonFunctions/fetchFinalizedData.php",
+                            data: { game_number: gameNumber, team: secondTeam },
+                            dataType: 'json',
+                            success: function(response) {
+                                if (response.status === 'success') {
+                                    // Process the second team's data
+                                    var secondTeamData = response.data;
+    
+                                    // Update finalized data with both teams' data
+                                    updateFinalizedData(firstTeamData, secondTeamData);
+                                } else {
+                                    console.error('Error fetching second team data:', response.message);
+                                }
+                            },
+                            error: function(xhr, status, error) {
+                                console.error('AJAX Error fetching second team data:', xhr.responseText);
+                            }
+                        });
+                    } else {
+                        console.error('Error fetching first team data:', response.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('AJAX Error fetching first team data:', xhr.responseText);
+                }
+            });
+        }
+    });
+    
+    
 
     // Function to populate match name dropdown
     function populateMatchNameDropdown() {
@@ -743,6 +875,7 @@ $(document).ready(function() {
                                 // Reload updated data
                                 fetchTeamData(gameNumber, firstTeam, secondTeam, quarter);
                                 fetchTeamQuarterTotal(gameNumber, firstTeam, secondTeam, quarter);
+                                
                                 fetchTeamQuarterSum(gameNumber, firstTeam, secondTeam, quarter, player.match_id, player.game_team, player.game_quarter);
                                 fetchAndUpdateTeamTotal(gameNumber, firstTeam, secondTeam, quarter, player.match_id, player.game_team, player.game_quarter);
                                 
@@ -757,11 +890,13 @@ $(document).ready(function() {
     
                 } else {
                     console.error('Error fetching teams:', response.message);
+                    
                     // Handle error case if needed
                 }
             },
             error: function(xhr, status, error) {
                 console.error('AJAX Error fetching teams:', error);
+                
                 // Handle AJAX error
             }
         });
@@ -1031,6 +1166,7 @@ $(document).ready(function() {
                         success: function(response) {
                             if (response.status === 'success') {
                                 alert('Match created successfully');
+                                window.location.reload();
                                 // Optionally, reload data or update the UI here
                             } else {
                                 alert('Error creating match: ' + response.message);
@@ -1064,4 +1200,192 @@ $(document).ready(function() {
     populateDropdowns();
     
     });
+
+// create match --------------------------------------------------------------------------------------------------------------
+// jQuery function to handle click event on showMatchesButton
+// jQuery function to handle click event on showMatchesButton
+$('#showMatchesButton').click(function() {
+    // Fetch match results from server
+    $.ajax({
+        type: "GET",
+        url: "phpFile/buttonFunctions/fetchMatches.php",
+        dataType: 'json',
+        success: function(response) {
+            if (response.status === 'success') {
+                var matches = response.data;
+                var matchResultsContainer = $('#matchResultsContainer');
+                matchResultsContainer.empty(); // Clear previous content
+
+                // Loop through each match and create cards
+                matches.forEach(function(match) {
+                    var cardHtml = `
+                        <div class="col-12 mb-4">
+                            <div class="card gradient-bg">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <!-- Left side (Winner) -->
+                                        <div class="col-4 text-center">
+                                            <h4>W</h4>
+                                            <p>${match.match_win}</p>
+                                            <p>${match.team_1_score}</p>
+                                        </div>
+
+                                        <!-- Middle (Match details) -->
+                                        <div class="col-4 text-center">
+                                            <h5>${match.match_name}</h5>
+                                            <p>vs</p>
+                                            <p>${match.bball_match_id}</p>
+                                        </div>
+
+                                        <!-- Right side (Loser) -->
+                                        <div class="col-4 text-center">
+                                            <h4>L</h4>
+                                            <p>${match.match_lose}</p>
+                                            <p>${match.team_2_score}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    matchResultsContainer.append(cardHtml);
+                });
+
+                // Show the modal
+                $('#matchesModal').modal('show');
+            } else {
+                console.error('Error fetching match results:', response.message);
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('AJAX Error fetching match results:', error);
+        }
+    });
+
+    function showGameDetails(matchId, team1, team2) {
+        // First table (team 1)
+        var firstTable = $('#firstTableBody');
+        firstTable.empty(); // Clear previous content
+
+        // Second table (team 2)
+        var secondTable = $('#secondTableBody');
+        secondTable.empty(); // Clear previous content
+
+        // Fetch data for team 1
+        $.ajax({
+            type: "GET",
+            url: "phpFile/buttonFunctions/fetchGameDetails.php",
+            data: {
+                match_id: matchId,
+                team: team1
+            },
+            dataType: 'json',
+            success: function(response1) {
+                if (response1.status === 'success') {
+                    var team1Data = response1.data;
+
+                    // Populate first table
+                    team1Data.forEach(function(row) {
+                        var rowHtml = `
+                            <tr>
+                                <td>${row.game_quarter}</td>
+                                <td>${row.game_points}</td>
+                                <td>${row.game_2fgm}</td>
+                                <td>${row.game_3fgm}</td>
+                                <td>${row.game_ftm}</td>
+                                <td>${row.game_2pts}</td>
+                                <td>${row.game_3pts}</td>
+                                <td>${row.game_ftpts}</td>
+                                <td>${row.game_2fga}</td>
+                                <td>${row.game_3fga}</td>
+                                <td>${row.game_fta}</td>
+                                <td>${row.game_ass}</td>
+                                <td>${row.game_block}</td>
+                                <td>${row.game_steal}</td>
+                                <td>${row.game_ofreb}</td>
+                                <td>${row.game_defreb}</td>
+                                <td>${row.game_turn}</td>
+                                <td>${row.game_foul}</td>
+                            </tr>
+                        `;
+                        firstTable.append(rowHtml);
+                    });
+                } else {
+                    console.error('Error fetching team 1 game details:', response1.message);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('AJAX Error fetching team 1 game details:', error);
+            }
+        });
+
+        // Fetch data for team 2
+        $.ajax({
+            type: "GET",
+            url: "phpFile/buttonFunctions/fetchGameDetails.php",
+            data: {
+                match_id: matchId,
+                team: team2
+            },
+            dataType: 'json',
+            success: function(response2) {
+                if (response2.status === 'success') {
+                    var team2Data = response2.data;
+
+                    // Populate second table
+                    team2Data.forEach(function(row) {
+                        var rowHtml = `
+                            <tr>
+                                <td>${row.game_quarter}</td>
+                                <td>${row.game_points}</td>
+                                <td>${row.game_2fgm}</td>
+                                <td>${row.game_3fgm}</td>
+                                <td>${row.game_ftm}</td>
+                                <td>${row.game_2pts}</td>
+                                <td>${row.game_3pts}</td>
+                                <td>${row.game_ftpts}</td>
+                                <td>${row.game_2fga}</td>
+                                <td>${row.game_3fga}</td>
+                                <td>${row.game_fta}</td>
+                                <td>${row.game_ass}</td>
+                                <td>${row.game_block}</td>
+                                <td>${row.game_steal}</td>
+                                <td>${row.game_ofreb}</td>
+                                <td>${row.game_defreb}</td>
+                                <td>${row.game_turn}</td>
+                                <td>${row.game_foul}</td>
+                            </tr>
+                        `;
+                        secondTable.append(rowHtml);
+                    });
+                } else {
+                    console.error('Error fetching team 2 game details:', response2.message);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('AJAX Error fetching team 2 game details:', error);
+            }
+        });
+    }
+
+    // Click event handler for each match result card
+    $(document).on('click', '.match-card', function() {
+        var matchId = $(this).data('match-id');
+        var team1 = $(this).data('team1');
+        var team2 = $(this).data('team2');
+
+        // Show game details for this match
+        showGameDetails(matchId, team1, team2);
+
+        // Show/hide the game details tables
+        $('#gameDetails').collapse('show');
+    });
+
+    // Function to initialize modal on show
+    $('#matchesModal').on('show.bs.modal', function() {
+        // Clear previous game details if any
+        $('#firstTableBody').empty();
+        $('#secondTableBody').empty();
+    });
+});
 
