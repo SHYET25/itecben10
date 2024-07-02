@@ -250,6 +250,7 @@ $(document).ready(function() {
                     
                     
                     fetchTeamQuarterTotal(gameNumber, firstTeam, secondTeam, quarter);
+                    fetchFinalPoints(gameNumber, firstTeam, secondTeam);
                     
 
                 } else {
@@ -288,7 +289,7 @@ $(document).ready(function() {
                     
                     fetchTeamQuarterTotal(gameNumber, firstTeam, secondTeam, quarter);
                     fetchFinalPoints(gameNumber, firstTeam, secondTeam);
-
+                    console.log("ayusin mo depota" +    gameNumber);
                 } else {
                     console.error('Error fetching teams:', response.message);
                     // Handle error case if needed
