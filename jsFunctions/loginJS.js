@@ -1,5 +1,7 @@
 $('#loginButton').click(function(event) {
     event.preventDefault();  // Prevent the form from submitting the default way
+
+    
     if (validateLoginForm()) {
         $.ajax({
             url: 'phpFile/buttonFunctions/logInButton.php',  // Update with the actual path to your PHP script
