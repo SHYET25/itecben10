@@ -321,6 +321,7 @@ $(document).ready(function() {
                         if (confirmFinalize) {
                             
                             fetchFinalizeGame(gameNumber, firstTeam, secondTeam);
+                            fetchAthleteInfoTotalGame(gameNumber, firstTeam, secondTeam);
                             
                         } 
 
@@ -336,7 +337,7 @@ $(document).ready(function() {
                 }
             });
         });
-    
+        
         function fetchFinalizeGame(gameNumber, firstTeam, secondTeam) {
             // Function to update the finalized data
             function updateFinalizedData(firstTeamData, secondTeamData) {
@@ -425,6 +426,164 @@ $(document).ready(function() {
             });
         }
     });
+
+    function fetchAthleteInfoTotalGame(gameNumber) {
+        // Function to update the finalized data
+        function updateAthleteInfoData(firstTeamData, secondTeamData) {
+            // Initialize a map to store sums for each ath_bball_player_id
+            var sums = {};
+        
+            // Step 1: Calculate sums for firstTeamData
+            firstTeamData.forEach(function(newDataItem) {
+                var newDataID = newDataItem.ath_bball_player_id;
+        
+                if (!sums[newDataID]) {
+                    sums[newDataID] = {
+                        total_pts_sum: 0,
+                        total_2fgm_sum: 0,
+                        total_2pts_sum: 0,
+                        total_3fgm_sum: 0,
+                        total_3pts_sum: 0,
+                        total_ftm_sum: 0,
+                        total_ftpts_sum: 0,
+                        total_2fga_sum: 0,
+                        total_3fga_sum: 0,
+                        total_fta_sum: 0,
+                        total_ass_sum: 0,
+                        total_block_sum: 0,
+                        total_steal_sum: 0,
+                        total_ofreb_sum: 0,
+                        total_defreb_sum: 0,
+                        total_turn_sum: 0,
+                        total_foul_sum: 0,
+                        total_game_sum: 0
+                    };
+                }
+        
+                // Update sums for each column
+                sums[newDataID].total_pts_sum += parseInt(newDataItem.game_pts || 0, 10);
+                sums[newDataID].total_2fgm_sum += parseInt(newDataItem.game_2fgm || 0, 10);
+                sums[newDataID].total_2pts_sum += parseInt(newDataItem.game_2pts || 0, 10);
+                sums[newDataID].total_3fgm_sum += parseInt(newDataItem.game_3fgm || 0, 10);
+                sums[newDataID].total_3pts_sum += parseInt(newDataItem.game_3pts || 0, 10);
+                sums[newDataID].total_ftm_sum += parseInt(newDataItem.game_ftm || 0, 10);
+                sums[newDataID].total_ftpts_sum += parseInt(newDataItem.game_ftpts || 0, 10);
+                sums[newDataID].total_2fga_sum += parseInt(newDataItem.game_2fga || 0, 10);
+                sums[newDataID].total_3fga_sum += parseInt(newDataItem.game_3fga || 0, 10);
+                sums[newDataID].total_fta_sum += parseInt(newDataItem.game_fta || 0, 10);
+                sums[newDataID].total_ass_sum += parseInt(newDataItem.game_ass || 0, 10);
+                sums[newDataID].total_block_sum += parseInt(newDataItem.game_block || 0, 10);
+                sums[newDataID].total_steal_sum += parseInt(newDataItem.game_steal || 0, 10);
+                sums[newDataID].total_ofreb_sum += parseInt(newDataItem.game_ofreb || 0, 10);
+                sums[newDataID].total_defreb_sum += parseInt(newDataItem.game_defreb || 0, 10);
+                sums[newDataID].total_turn_sum += parseInt(newDataItem.game_turn || 0, 10);
+                sums[newDataID].total_foul_sum += parseInt(newDataItem.game_foul || 0, 10);
+                sums[newDataID].total_game_sum += parseInt(newDataItem.total_game || 0, 10);
+            });
+        
+            // Step 2: Update secondTeamData with summed values
+            secondTeamData.forEach(function(oldDataItem) {
+                var oldDataID = oldDataItem.ath_bball_id;
+                
+                if (sums[oldDataID]) {
+                    // Update each column with the sum of old and new data
+                    oldDataItem.total_pts = parseInt(oldDataItem.total_pts || 0, 10) + sums[oldDataID].total_pts_sum;
+                    oldDataItem.total_2fgm = parseInt(oldDataItem.total_2fgm || 0, 10) + sums[oldDataID].total_2fgm_sum;
+                    oldDataItem.total_2pts = parseInt(oldDataItem.total_2pts || 0, 10) + sums[oldDataID].total_2pts_sum;
+                    oldDataItem.total_3fgm = parseInt(oldDataItem.total_3fgm || 0, 10) + sums[oldDataID].total_3fgm_sum;
+                    oldDataItem.total_3pts = parseInt(oldDataItem.total_3pts || 0, 10) + sums[oldDataID].total_3pts_sum;
+                    oldDataItem.total_ftm = parseInt(oldDataItem.total_ftm || 0, 10) + sums[oldDataID].total_ftm_sum;
+                    oldDataItem.total_ftpts = parseInt(oldDataItem.total_ftpts || 0, 10) + sums[oldDataID].total_ftpts_sum;
+                    oldDataItem.total_2fga = parseInt(oldDataItem.total_2fga || 0, 10) + sums[oldDataID].total_2fga_sum;
+                    oldDataItem.total_3fga = parseInt(oldDataItem.total_3fga || 0, 10) + sums[oldDataID].total_3fga_sum;
+                    oldDataItem.total_fta = parseInt(oldDataItem.total_fta || 0, 10) + sums[oldDataID].total_fta_sum;
+                    oldDataItem.total_ass = parseInt(oldDataItem.total_ass || 0, 10) + sums[oldDataID].total_ass_sum;
+                    oldDataItem.total_block = parseInt(oldDataItem.total_block || 0, 10) + sums[oldDataID].total_block_sum;
+                    oldDataItem.total_steal = parseInt(oldDataItem.total_steal || 0, 10) + sums[oldDataID].total_steal_sum;
+                    oldDataItem.total_ofreb = parseInt(oldDataItem.total_ofreb || 0, 10) + sums[oldDataID].total_ofreb_sum;
+                    oldDataItem.total_defreb = parseInt(oldDataItem.total_defreb || 0, 10) + sums[oldDataID].total_defreb_sum;
+                    oldDataItem.total_turn = parseInt(oldDataItem.total_turn || 0, 10) + sums[oldDataID].total_turn_sum;
+                    oldDataItem.total_foul = parseInt(oldDataItem.total_foul || 0, 10) + sums[oldDataID].total_foul_sum;
+                    oldDataItem.total_game = parseInt(oldDataItem.total_game || 0, 10) + sums[oldDataID].total_game_sum;
+        
+                    // Calculate total rebounds as the sum of defensive and offensive rebounds
+                    oldDataItem.total_reb = (parseInt(oldDataItem.total_defreb || 0, 10) + parseInt(oldDataItem.total_ofreb || 0, 10)) +
+                        (sums[oldDataID].total_defreb_sum + sums[oldDataID].total_ofreb_sum);
+        
+                    // Log the data being sent for debugging purposes
+                    console.log('Sending data:', oldDataItem);
+        
+                    // Example: Send AJAX request to update the database with oldDataItem
+                    $.ajax({
+                        type: "POST",
+                        url: "phpFile/buttonFunctions/updateAthleteTotal.php",
+                        data: { updateData: oldDataItem },
+                        dataType: 'json',
+                        success: function(response) {
+                            if (response.status === 'success') {
+                                console.log('Match result updated successfully for player ID:', oldDataID);
+                            } else {
+                                console.error('Error updating match result for player ID:', oldDataID, response.message);
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('AJAX Error updating match result:', xhr.responseText);
+                        }
+                    });
+                }
+            });
+        
+            // Log the updated secondTeamData (for debugging purposes)
+            console.log('Updated secondTeamData:', secondTeamData);
+        }
+        
+        // Fetch data for the first team
+        $.ajax({
+            type: "GET",
+            url: "phpFile/buttonFunctions/fetchAthleteNames.php",
+            data: { game_number: gameNumber },
+            dataType: 'json',
+            success: function(response) {
+                if (response.status === 'success') {
+                    var athletesNewData = response.data;
+        
+                    // Fetch data for the second team
+                    $.ajax({
+                        type: "GET",
+                        url: "phpFile/buttonFunctions/fetchAthletesCurrentData.php",
+                        data: { game_number: gameNumber },
+                        dataType: 'json',
+                        success: function(response) {
+                            if (response.status === 'success') {
+                                var athletesOldData = response.data;
+        
+                                // Now you have both athletesNewData and athletesOldData
+                                // Process or use the data as needed
+                                console.log('Athletes New Data:', athletesNewData);
+                                console.log('Athletes Old Data:', athletesOldData);
+        
+                                // Example: Update UI or call a function with both datasets
+                                updateAthleteInfoData(athletesNewData, athletesOldData);
+                            } else {
+                                console.error('Error fetching second team data:', response.message);
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('AJAX Error fetching second team data:', xhr.responseText);
+                        }
+                    });
+                } else {
+                    console.error('Error fetching first team data:', response.message);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('AJAX Error fetching first team data:', xhr.responseText);
+            }
+        });
+    }
+    
+    
+    
     
     
 
@@ -585,9 +744,6 @@ $(document).ready(function() {
     }
     
     
-
-
-
     function fetchTeamQuarterTotal(gameNumber, firstTeam, secondTeam, quarter) {
         $.ajax({
             type: "GET",
