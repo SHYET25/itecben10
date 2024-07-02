@@ -18,8 +18,7 @@ $(document).ready(function() {
                     $('#username').text('@' + response.loggedInUserData.coach_user);
                     $('#name1').text(response.loggedInUserData.coach_name);
                     $('#username1').text('@' + response.loggedInUserData.coach_user);
-                    console.log(response.loggedInUserData.coach_user);
-                    console.log(response.loggedInUserData.coach_name);
+
                 } else {
                     alert(response.message);
                     window.location.href = 'login.html';
@@ -160,7 +159,7 @@ $(document).ready(function() {
     // Save game data for selected athletes
     function saveGameData() {
         var team = $('#teamDropdown').val();
-        console.log('Selected team:', team);
+
 
         selectedAthletes.forEach(function(athlete) {
             var data = { ath_bball_player_id: athlete.AthleteID, game_team: team };
@@ -289,7 +288,7 @@ $(document).ready(function() {
                     
                     fetchTeamQuarterTotal(gameNumber, firstTeam, secondTeam, quarter);
                     fetchFinalPoints(gameNumber, firstTeam, secondTeam);
-                    console.log("ayusin mo depota" +    gameNumber);
+
                 } else {
                     console.error('Error fetching teams:', response.message);
                     // Handle error case if needed
@@ -320,11 +319,12 @@ $(document).ready(function() {
                         // Ask for confirmation before proceeding
                         var confirmFinalize = confirm('Do you want to finalize this game?');
                         if (confirmFinalize) {
+                            
                             fetchFinalizeGame(gameNumber, firstTeam, secondTeam);
-                            window.location.reload();
-                        } else {
-                            console.log('Finalization cancelled.');
-                        }
+                            
+                        } 
+
+                        
                     } else {
                         console.error('Error fetching teams:', response.message);
                         // Handle error case if needed
@@ -341,12 +341,7 @@ $(document).ready(function() {
             // Function to update the finalized data
             function updateFinalizedData(firstTeamData, secondTeamData) {
                 // Log the first team's name and points
-                console.log('First Team:', firstTeamData.game_team);
-                console.log('First Team Points:', firstTeamData.game_pts);
-    
-                // Log the second team's name and points
-                console.log('Second Team:', secondTeamData.game_team);
-                console.log('Second Team Points:', secondTeamData.game_pts);
+
     
                 // Determine match win and lose
                 var matchWin, matchLose;
@@ -377,7 +372,7 @@ $(document).ready(function() {
                     dataType: 'json',
                     success: function(response) {
                         if (response.status === 'success') {
-                            console.log('Match result updated successfully');
+
                         } else {
                             console.error('Error updating match result:', response.message);
                         }
@@ -472,15 +467,10 @@ $(document).ready(function() {
                 success: function(response) {
                     if (response.status === 'success') {
                         // Process data here
-                        console.log(`Data received for:`);
-                        console.log(response.data); // Log the data received
+
 
                         // Example: Process each quarter's data if needed
-                        response.data.forEach(function(quarterData, index) {
-                            console.log(`Quarter ${index + 1} data:`);
-                            console.log(quarterData);
-                            // Process each quarter's data as needed
-                        });
+                        
 
                     } else {
                         console.error(`Error fetching data for`, response.message);
@@ -501,16 +491,10 @@ $(document).ready(function() {
 // asd
 
     function fetchTeamQuarterSum(gameNumber, firstTeam, secondTeam, quarter, match_id, gameTeam, gameQuarter) {
-        console.log("Game Number:", gameNumber);
-        console.log("First Team:", firstTeam);
-        console.log("Second Team:", secondTeam);
-        console.log("Quarter:", quarter);
-        console.log("Game Team:", gameTeam);
-        console.log("Game Quarter:", gameQuarter);
-        console.log("Match ID:", match_id);
+
 
         function updateTeamQuarterSums(sum) {
-            console.log("Match asdad:", sum);
+
             $.ajax({
                 type: "POST",
                 url: "phpFile/buttonFunctions/updateQuarterResult.php",
@@ -518,7 +502,7 @@ $(document).ready(function() {
                 dataType: 'json',
                 success: function(response) {
                     if (response.status === 'success') {
-                        console.log(`Successfully updated Quarter for team: ${gameTeam}`);
+
                     } else {
                         console.error(`Error updating Quarter for team: ${gameTeam}`, response.message);
                     }
@@ -536,7 +520,7 @@ $(document).ready(function() {
             dataType: 'json',
             success: function(response) {
                 if (response.status === 'success') {
-                    console.log("First Team Sums:", response.sum);
+
                     updateTeamQuarterSums(response.sum);
                 } else {
                     console.error("Error fetching sums for first team:", response.message);
@@ -550,9 +534,7 @@ $(document).ready(function() {
     }
 
     function fetchFinalPoints(gameNumber, firstTeam, secondTeam) {
-        console.log("Match ID:", gameNumber);
-        console.log("First Team:", firstTeam);
-        console.log("Second Team:", secondTeam);
+;
     
         // AJAX request for first team
         $.ajax({
@@ -562,7 +544,7 @@ $(document).ready(function() {
             dataType: 'json',
             success: function(response) {
                 if (response.status === 'success') {
-                    console.log("First Team Final Points:", response.data);
+
                     updateScoreboard(response.data, 'first');
                 } else {
                     console.error("Error fetching sums for first team:", response.message);
@@ -581,7 +563,7 @@ $(document).ready(function() {
             dataType: 'json',
             success: function(response) {
                 if (response.status === 'success') {
-                    console.log("Second Team Final Points:", response.data);
+
                     updateScoreboard(response.data, 'second');
                 } else {
                     console.error("Error fetching sums for second team:", response.message);
@@ -694,7 +676,7 @@ $(document).ready(function() {
     function fetchAndUpdateTeamTotal (gameNumber, firstTeam, secondTeam, quarter, match_id, gameTeam, gameQuarter) {
         
         function updateTeamSums(sums) {
-            console.log('Error updating sums for shit:' + sums);
+
             $.ajax({
                 type: "POST",
                 url: "phpFile/buttonFunctions/updateMatchResult.php",
@@ -702,7 +684,7 @@ $(document).ready(function() {
                 dataType: 'json',
                 success: function(response) {
                     if (response.status === 'success') {
-                        console.log(`Successfully updated sums for team: `);
+
                     } else {
                         console.error('Error updating sums for team:' + response.message);
                     }
@@ -721,7 +703,7 @@ $(document).ready(function() {
             dataType: 'json',
             success: function(response) {
                 if (response.status === 'success') {
-                    console.log("Second Team Sums:", response.sums);
+
                     updateTeamSums(response.sums);
                 } else {
                     console.error("Error fetching sums for second team:", response.message);
@@ -851,7 +833,7 @@ $(document).ready(function() {
                                 handleDependentUpdates(player, key, newValue);
                                 
                                 // Retrieve specific player data
-                                retrieveSpecificPlayerData(player);
+
     
                             });
     
@@ -890,7 +872,7 @@ $(document).ready(function() {
                                 handleDependentUpdates(player, key, newValue);
     
                                 // Retrieve specific player data
-                                retrieveSpecificPlayerData(player);
+
     
                             });
     
@@ -938,15 +920,14 @@ $(document).ready(function() {
                         dataType: 'json',
                         success: function(response) {
                             if (response.status === 'success') {
-                                console.log('Database updated successfully');
+
                                 // Reload updated data
                                 fetchTeamData(gameNumber, firstTeam, secondTeam, quarter);
                                 fetchTeamQuarterTotal(gameNumber, firstTeam, secondTeam, quarter);
-                                
                                 fetchTeamQuarterSum(gameNumber, firstTeam, secondTeam, quarter, player.match_id, player.game_team, player.game_quarter);
                                 fetchAndUpdateTeamTotal(gameNumber, firstTeam, secondTeam, quarter, player.match_id, player.game_team, player.game_quarter);
                                 fetchFinalPoints(gameNumber, firstTeam, secondTeam);
-                                
+                                fetchTeamData(gameNumber, firstTeam, secondTeam, quarter);
                             } else {
                                 console.error('Failed to update database:', response.message);
                             }
@@ -1003,13 +984,7 @@ $(document).ready(function() {
     }
     
     // Function to retrieve specific player data
-    function retrieveSpecificPlayerData(player) {
-        console.log("Player Data Retrieved:");
-        console.log("Player ID:", player.ath_bball_player_id);
-        console.log("Player Name:", player.player_name); // Assuming player_name is a property in player data
-        // Perform other actions with player data if needed
-    }
-
+    
     // VIEW DATAS ==================================================================================================================================================================
 
 
@@ -1234,7 +1209,7 @@ $(document).ready(function() {
                         success: function(response) {
                             if (response.status === 'success') {
                                 alert('Match created successfully');
-                                window.location.reload();
+                                
                                 // Optionally, reload data or update the UI here
                             } else {
                                 alert('Error creating match: ' + response.message);
@@ -1272,64 +1247,8 @@ $(document).ready(function() {
 // create match --------------------------------------------------------------------------------------------------------------
 // jQuery function to handle click event on showMatchesButton
 // jQuery function to handle click event on showMatchesButton
-$('#showMatchesButton').click(function() {
-    // Fetch match results from server
-    $.ajax({
-        type: "GET",
-        url: "phpFile/buttonFunctions/fetchMatches.php",
-        dataType: 'json',
-        success: function(response) {
-            if (response.status === 'success') {
-                var matches = response.data;
-                var matchResultsContainer = $('#matchResultsContainer');
-                matchResultsContainer.empty(); // Clear previous content
-
-                // Loop through each match and create cards
-                matches.forEach(function(match) {
-                    var cardHtml = `
-                        <div class="col-12 mb-4">
-                            <div class="card gradient-bg">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <!-- Left side (Winner) -->
-                                        <div class="col-4 text-center">
-                                            <h4>W</h4>
-                                            <p>${match.match_win}</p>
-                                            <p>${match.team_1_score}</p>
-                                        </div>
-
-                                        <!-- Middle (Match details) -->
-                                        <div class="col-4 text-center">
-                                            <h5>${match.match_name}</h5>
-                                            <p>vs</p>
-                                            <p>${match.bball_match_id}</p>
-                                        </div>
-
-                                        <!-- Right side (Loser) -->
-                                        <div class="col-4 text-center">
-                                            <h4>L</h4>
-                                            <p>${match.match_lose}</p>
-                                            <p>${match.team_2_score}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                    matchResultsContainer.append(cardHtml);
-                });
-
-                // Show the modal
-                $('#matchesModal').modal('show');
-            } else {
-                console.error('Error fetching match results:', response.message);
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error('AJAX Error fetching match results:', error);
-        }
-    });
-
+$(document).ready(function() {
+    // Function to fetch and display game details
     function showGameDetails(matchId, team1, team2) {
         // First table (team 1)
         var firstTable = $('#firstTableBody');
@@ -1449,11 +1368,72 @@ $('#showMatchesButton').click(function() {
         $('#gameDetails').collapse('show');
     });
 
-    // Function to initialize modal on show
+    // Function to fetch and display match results
+    $('#showMatchesButton').click(function() {
+        $.ajax({
+            type: "GET",
+            url: "phpFile/buttonFunctions/fetchMatches.php",
+            dataType: 'json',
+            success: function(response) {
+                if (response.status === 'success') {
+                    var matches = response.data;
+                    var matchResultsContainer = $('#matchResultsContainer');
+                    matchResultsContainer.empty(); // Clear previous content
+
+                    // Loop through each match and create cards
+                    matches.forEach(function(match) {
+                        var cardHtml = `
+                            <div class="col-12 mb-4">
+                                <div class="card gradient-bg match-card" 
+                                     data-match-id="${match.bball_match_id}" 
+                                     data-team1="${match.team_1}" 
+                                     data-team2="${match.team_2}">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <!-- Left side (Winner) -->
+                                            <div class="col-4 text-center">
+                                                <h4>W</h4>
+                                                <p>${match.match_win}</p>
+                                                <p>${match.team_1_score}</p>
+                                            </div>
+
+                                            <!-- Middle (Match details) -->
+                                            <div class="col-4 text-center">
+                                                <h5>${match.match_name}</h5>
+                                                <p>vs</p>
+                                                <p>${match.bball_match_id}</p>
+                                            </div>
+
+                                            <!-- Right side (Loser) -->
+                                            <div class="col-4 text-center">
+                                                <h4>L</h4>
+                                                <p>${match.match_lose}</p>
+                                                <p>${match.team_2_score}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        matchResultsContainer.append(cardHtml);
+                    });
+
+                    // Show the modal
+                    $('#matchesModal').modal('show');
+                } else {
+                    console.error('Error fetching match results:', response.message);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('AJAX Error fetching match results:', error);
+            }
+        });
+    });
+
+    // Initialize modal on show
     $('#matchesModal').on('show.bs.modal', function() {
         // Clear previous game details if any
         $('#firstTableBody').empty();
         $('#secondTableBody').empty();
     });
 });
-

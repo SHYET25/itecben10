@@ -69,6 +69,7 @@
             background: linear-gradient(to right, green, red);
         }
         
+        
     </style>
 </head>
 <body>
@@ -94,88 +95,95 @@
 
 
 <!-- Modal -->
-    <div class="modal fade" id="matchesModal" tabindex="-1" role="dialog" aria-labelledby="matchesModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="matchesModalLabel">Match Results</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+    <!-- Button to trigger modal -->
+
+<!-- Modal -->
+<div class="modal fade" id="matchesModal" tabindex="-1" role="dialog" aria-labelledby="matchesModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+        <div class="modal-content" style="height: 90vh; overflow-y: auto;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="matchesModalLabel">Match Results</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row" id="matchResultsContainer">
+                    <!-- Match results will be dynamically populated here -->
                 </div>
-                <div class="modal-body">
-                    <div class="row" id="matchResultsContainer">
-                        <!-- Match results will be dynamically populated here -->
+                <!-- Game details tables -->
+                <div id="gameDetails" class="collapse mt-4">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5>Team 1 Game Details</h5>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Quarter</th>
+                                        <th>Points</th>
+                                        <th>2FGM</th>
+                                        <th>3FGM</th>
+                                        <th>FTM</th>
+                                        <th>2PTS</th>
+                                        <th>3PTS</th>
+                                        <th>FTPTS</th>
+                                        <th>2FGA</th>
+                                        <th>3FGA</th>
+                                        <th>FTA</th>
+                                        <th>ASS</th>
+                                        <th>BLOCK</th>
+                                        <th>STEAL</th>
+                                        <th>OFREB</th>
+                                        <th>DEFREB</th>
+                                        <th>TURN</th>
+                                        <th>FOUL</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="firstTableBody">
+                                    <!-- Data will be populated dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                    <!-- Game details tables -->
-                    <div id="gameDetails" class="collapse mt-4">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <h5>Team 1 Game Details</h5>
-                                <table class="table table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th>Quarter</th>
-                                            <th>Points</th>
-                                            <th>2FGM</th>
-                                            <th>3FGM</th>
-                                            <th>FTM</th>
-                                            <th>2PTS</th>
-                                            <th>3PTS</th>
-                                            <th>FTPTS</th>
-                                            <th>2FGA</th>
-                                            <th>3FGA</th>
-                                            <th>FTA</th>
-                                            <th>ASS</th>
-                                            <th>BLOCK</th>
-                                            <th>STEAL</th>
-                                            <th>OFREB</th>
-                                            <th>DEFREB</th>
-                                            <th>TURN</th>
-                                            <th>FOUL</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="firstTableBody">
-                                        <!-- Data will be populated dynamically -->
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="col-md-6">
-                                <h5>Team 2 Game Details</h5>
-                                <table class="table table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th>Quarter</th>
-                                            <th>Points</th>
-                                            <th>2FGM</th>
-                                            <th>3FGM</th>
-                                            <th>FTM</th>
-                                            <th>2PTS</th>
-                                            <th>3PTS</th>
-                                            <th>FTPTS</th>
-                                            <th>2FGA</th>
-                                            <th>3FGA</th>
-                                            <th>FTA</th>
-                                            <th>ASS</th>
-                                            <th>BLOCK</th>
-                                            <th>STEAL</th>
-                                            <th>OFREB</th>
-                                            <th>DEFREB</th>
-                                            <th>TURN</th>
-                                            <th>FOUL</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="secondTableBody">
-                                        <!-- Data will be populated dynamically -->
-                                    </tbody>
-                                </table>
-                            </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5>Team 2 Game Details</h5>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Quarter</th>
+                                        <th>Points</th>
+                                        <th>2FGM</th>
+                                        <th>3FGM</th>
+                                        <th>FTM</th>
+                                        <th>2PTS</th>
+                                        <th>3PTS</th>
+                                        <th>FTPTS</th>
+                                        <th>2FGA</th>
+                                        <th>3FGA</th>
+                                        <th>FTA</th>
+                                        <th>ASS</th>
+                                        <th>BLOCK</th>
+                                        <th>STEAL</th>
+                                        <th>OFREB</th>
+                                        <th>DEFREB</th>
+                                        <th>TURN</th>
+                                        <th>FOUL</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="secondTableBody">
+                                    <!-- Data will be populated dynamically -->
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
+
+
     
         <!-- View Game Data Modal -->
         <div class="modal fade" id="viewGameDataModal" tabindex="-1" aria-labelledby="viewGameDataModalLabel" aria-hidden="true">
@@ -458,5 +466,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
     <script src="jsFunctions/coachProfileJs.js"></script>
+
 </body>
 </html>
