@@ -18,10 +18,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // If the email already exists in the selected sport's table, return an error message
     if ($result->num_rows > 0) {
-        echo json_encode(['status' => 'error', 'message' => 'Email already exists']);
+        echo json_encode(['status' => 'error', 'message' => 'Email or Username already exists']);
         exit();
     } else {
-        
         // If the email doesn't exist, proceed with the insertion
         $sql = "INSERT INTO athlete_info (ath_name, ath_user, ath_email, ath_pass, ath_sport, ath_position) VALUES (?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
@@ -40,7 +39,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $general_stmt->bind_param("i", $last_id);
 
                     if ($general_stmt->execute()) {
-                        echo json_encode(['status' => 'success']);
+                        // Insert into basketball_athlete_percentage table
+                        $percentage_sql = "INSERT INTO basketball_athlete_percentage (ath_id, shooting, shooting_2, shooting_3, shooting_1, passing, of_reb, def_reb, rebounding, defending, blocking, stealing, total_percentage) VALUES (?, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)";
+                        $percentage_stmt = $conn->prepare($percentage_sql);
+                        $percentage_stmt->bind_param("i", $last_id);
+
+                        if ($percentage_stmt->execute()) {
+                            echo json_encode(['status' => 'success']);
+                        } else {
+                            echo json_encode(['status' => 'error', 'message' => 'Unable to record data in basketball_athlete_percentage table']);
+                            error_log('Insert operation failed in basketball_athlete_percentage: ' . $percentage_stmt->error);
+                        }
+
+                        $percentage_stmt->close();
                     } else {
                         echo json_encode(['status' => 'error', 'message' => 'Unable to record data in ' . $table . ' table']);
                         error_log('Insert operation failed in ' . $table . ': ' . $general_stmt->error);
@@ -62,7 +73,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     }
 
                     $general_stmt->close();
-                    
                     break;
                 case 'badminton':
                     $table = 'badminton_athlete_info';
@@ -74,10 +84,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     echo json_encode(['status' => 'error', 'message' => 'Invalid sport selected']);
                     exit(); // Stop further execution
             }
-            
-
-            // Insert into the specific sport table with the retrieved ID and default values (0)
-            
         } else {
             echo json_encode(['status' => 'error', 'message' => 'Unable to record data']);
             error_log('Insert operation failed in athlete_info: ' . $stmt->error);

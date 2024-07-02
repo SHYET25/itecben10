@@ -7,8 +7,8 @@ include '../connection/connection.php';
 header('Content-Type: application/json');
 
 // SQL query to select all available athletes' data
-$sql = "SELECT `ath_bball_id`, `total_pts`, `total_2fgm`, `total_2pts`, `total_3fgm`, `total_3pts`, `total_ftm`, `total_ftpts`, `total_2fga`, `total_3fga`, `total_fta`, `total_ass`, `total_block`, `total_steal`, `total_ofreb`, `total_defreb`, `total_reb`, `total_turn`, `total_foul`, `total_game` 
-        FROM basketball_athlete_info";
+$sql = "SELECT `ath_id`, `shooting`, `shooting_2`, `shooting_3`, `shooting_1`, `passing`, `of_reb`, `def_reb`, `rebounding`, `defending`, `blocking`, `stealing`, `total_percentage`
+        FROM basketball_athlete_percentage";
 
 if ($result = $conn->query($sql)) {
     if ($result->num_rows > 0) {

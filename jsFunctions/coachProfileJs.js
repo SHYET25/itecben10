@@ -390,8 +390,10 @@ $(document).ready(function() {
                         var confirmFinalize = confirm('Do you want to finalize this game?');
                         if (confirmFinalize) {
                             
-                            fetchFinalizeGame(gameNumber, firstTeam, secondTeam);
+                            
                             fetchAthleteInfoTotalGame(gameNumber, firstTeam, secondTeam);
+                            fetchAthleteInfoPercent(gameNumber, firstTeam, secondTeam);
+                            fetchFinalizeGame(gameNumber, firstTeam, secondTeam);
                             
                         } 
 
@@ -548,7 +550,7 @@ $(document).ready(function() {
                 sums[newDataID].total_defreb_sum += parseInt(newDataItem.game_defreb || 0, 10);
                 sums[newDataID].total_turn_sum += parseInt(newDataItem.game_turn || 0, 10);
                 sums[newDataID].total_foul_sum += parseInt(newDataItem.game_foul || 0, 10);
-                sums[newDataID].total_game_sum += parseInt(newDataItem.total_game || 0, 10);
+                sums[newDataID].total_game_sum += parseInt(newDataItem.game_number || 0, 10);
             });
         
             // Step 2: Update secondTeamData with summed values
@@ -574,8 +576,8 @@ $(document).ready(function() {
                     oldDataItem.total_defreb = parseInt(oldDataItem.total_defreb || 0, 10) + sums[oldDataID].total_defreb_sum;
                     oldDataItem.total_turn = parseInt(oldDataItem.total_turn || 0, 10) + sums[oldDataID].total_turn_sum;
                     oldDataItem.total_foul = parseInt(oldDataItem.total_foul || 0, 10) + sums[oldDataID].total_foul_sum;
-                    oldDataItem.total_game = parseInt(oldDataItem.total_game || 0, 10) + sums[oldDataID].total_game_sum;
-        
+                    oldDataItem.total_game = (parseInt(oldDataItem.total_game || 0, 10) + sums[oldDataID].total_game_sum) / 4;
+                   
                     // Calculate total rebounds as the sum of defensive and offensive rebounds
                     oldDataItem.total_reb = (parseInt(oldDataItem.total_defreb || 0, 10) + parseInt(oldDataItem.total_ofreb || 0, 10)) +
                         (sums[oldDataID].total_defreb_sum + sums[oldDataID].total_ofreb_sum);
@@ -606,6 +608,8 @@ $(document).ready(function() {
             // Log the updated secondTeamData (for debugging purposes)
             console.log('Updated secondTeamData:', secondTeamData);
         }
+
+        
         
         // Fetch data for the first team
         $.ajax({
@@ -634,6 +638,181 @@ $(document).ready(function() {
         
                                 // Example: Update UI or call a function with both datasets
                                 updateAthleteInfoData(athletesNewData, athletesOldData);
+                            } else {
+                                console.error('Error fetching second team data:', response.message);
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('AJAX Error fetching second team data:', xhr.responseText);
+                        }
+                    });
+                } else {
+                    console.error('Error fetching first team data:', response.message);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('AJAX Error fetching first team data:', xhr.responseText);
+            }
+        });
+    }
+
+// dsa
+
+    function fetchAthleteInfoPercent(gameNumber) {
+        // Function to update the finalized data
+        function updateAthleteInfoPercent(firstTeamData, secondTeamData) {
+            // Initialize a map to store sums for each ath_bball_player_id
+            var sums = {};
+        
+            // Step 1: Calculate sums for firstTeamData
+            firstTeamData.forEach(function(newDataItem) {
+                var newDataID = newDataItem.ath_bball_id;
+        
+                if (!sums[newDataID]) {
+                    sums[newDataID] = {
+                        total_pts_sum: 0,
+                        total_2fgm_sum: 0,
+                        total_2pts_sum: 0,
+                        total_3fgm_sum: 0,
+                        total_3pts_sum: 0,
+                        total_ftm_sum: 0,
+                        total_ftpts_sum: 0,
+                        total_2fga_sum: 0,
+                        total_3fga_sum: 0,
+                        total_fta_sum: 0,
+                        total_ass_sum: 0,
+                        total_block_sum: 0,
+                        total_steal_sum: 0,
+                        total_ofreb_sum: 0,
+                        total_defreb_sum: 0,
+                        total_turn_sum: 0,
+                        total_foul_sum: 0,
+                        total_game_sum: 0
+                    };
+                }
+        
+                // Update sums for each column
+                sums[newDataID].total_pts_sum += parseInt(newDataItem.total_pts || 0, 10);
+                sums[newDataID].total_2fgm_sum += parseInt(newDataItem.total_2fgm || 0, 10);
+                sums[newDataID].total_2pts_sum += parseInt(newDataItem.total_2pts || 0, 10);
+                sums[newDataID].total_3fgm_sum += parseInt(newDataItem.total_3fgm || 0, 10);
+                sums[newDataID].total_3pts_sum += parseInt(newDataItem.total_3pts || 0, 10);
+                sums[newDataID].total_ftm_sum += parseInt(newDataItem.total_ftm || 0, 10);
+                sums[newDataID].total_ftpts_sum += parseInt(newDataItem.total_ftpts || 0, 10);
+                sums[newDataID].total_2fga_sum += parseInt(newDataItem.total_2fga || 0, 10);
+                sums[newDataID].total_3fga_sum += parseInt(newDataItem.total_3fga || 0, 10);
+                sums[newDataID].total_fta_sum += parseInt(newDataItem.total_fta || 0, 10);
+                sums[newDataID].total_ass_sum += parseInt(newDataItem.total_ass || 0, 10);
+                sums[newDataID].total_block_sum += parseInt(newDataItem.total_block || 0, 10);
+                sums[newDataID].total_steal_sum += parseInt(newDataItem.total_steal || 0, 10);
+                sums[newDataID].total_ofreb_sum += parseInt(newDataItem.total_ofreb || 0, 10);
+                sums[newDataID].total_defreb_sum += parseInt(newDataItem.total_defreb || 0, 10);
+                sums[newDataID].total_reb_sum += parseInt(newDataItem.total_reb || 0, 10);
+                sums[newDataID].total_turn_sum += parseInt(newDataItem.total_turn || 0, 10);
+                sums[newDataID].total_foul_sum += parseInt(newDataItem.total_foul || 0, 10);
+                sums[newDataID].total_game_sum += parseInt(newDataItem.total_game || 0, 10);
+            });
+        
+            // Step 2: Update secondTeamData with summed values
+            secondTeamData.forEach(function(oldDataItem) {
+                var oldDataID = oldDataItem.ath_id;
+                
+                if (sums[oldDataID]) {
+                    // Update each column with the sum of old and new data
+
+                    oldDataItem.shooting = ((sums[oldDataID].total_2fgm_sum + sums[oldDataID].total_3fgm_sum + sums[oldDataID].total_ftm_sum) / (sums[oldDataID].total_2fgm_sum + sums[oldDataID].total_3fgm_sum + sums[oldDataID].total_ftm_sum + sums[oldDataID].total_2fga_sum + sums[oldDataID].total_3fga_sum + sums[oldDataID].total_fta_sum)) * 40;
+
+                // Calculate Individual Shooting Scores
+                    oldDataItem.shooting_2 = (sums[oldDataID].total_2fgm_sum / (sums[oldDataID].total_2fgm_sum + sums[oldDataID].total_2fga_sum)) * 100;
+                    oldDataItem.shooting_3 = (sums[oldDataID].total_3fgm_sum / (sums[oldDataID].total_3fgm_sum + sums[oldDataID].total_3fga_sum)) * 100;
+                    oldDataItem.shooting_1 = (sums[oldDataID].total_ftm_sum / (sums[oldDataID].total_ftm_sum + sums[oldDataID].total_fta_sum)) * 100;
+
+                    // Calculate Passing Score
+                    oldDataItem.passing = (sums[oldDataID].total_ass_sum / (sums[oldDataID].total_ass_sum + sums[oldDataID].total_turn_sum)) * 15;
+
+                    // Calculate Individual Rebound Scores
+                    oldDataItem.of_reb = sums[oldDataID].total_ofreb_sum / sums[oldDataID].total_game_sum;
+                    oldDataItem.def_reb = sums[oldDataID].total_defreb_sum / sums[oldDataID].total_game_sum;
+
+                    // Calculate Rebounding Score and Normalize
+                    oldDataItem.rebounding = ((sums[oldDataID].total_ofreb_sum + sums[oldDataID].total_defreb_sum) / sums[oldDataID].total_game_sum) * 15;
+                    if (oldDataItem.rebounding > 15) {
+                        oldDataItem.rebounding = 15;
+                    }
+
+                    // Calculate Individual Defending Scores
+                    oldDataItem.blocking = sums[oldDataID].total_block_sum / sums[oldDataID].total_game_sum;
+                    oldDataItem.stealing = sums[oldDataID].total_steal_sum / sums[oldDataID].total_game_sum;
+
+                    // Calculate Defending Score and Normalize
+                    oldDataItem.defending = ((sums[oldDataID].total_block_sum + sums[oldDataID].total_steal_sum) / sums[oldDataID].total_game_sum) * 30;
+                    if (oldDataItem.defending > 30) {
+                        oldDataItem.defending = 30;
+                    }
+
+                    oldDataItem.total_percentage = oldDataItem.defending + oldDataItem.rebounding + oldDataItem.passing + oldDataItem.shooting;
+
+                    
+                   
+                    // Calculate total rebounds as the sum of defensive and offensive rebounds
+                    
+        
+                    // Log the data being sent for debugging purposes
+                    console.log('Sending data:', oldDataItem);
+        
+                    // Example: Send AJAX request to update the database with oldDataItem
+                    $.ajax({
+                        type: "POST",
+                        url: "phpFile/buttonFunctions/updateAthletePercentage.php",
+                        data: { updateData: oldDataItem },
+                        dataType: 'json',
+                        success: function(response) {
+                            if (response.status === 'success') {
+                                console.log('Match result updated successfully for player ID:', oldDataID);
+                            } else {
+                                console.error('Error updating match result for player ID:', oldDataID, response.message);
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('AJAX Error updating match result:', xhr.responseText);
+                        }
+                    });
+                }
+            });
+        
+            // Log the updated secondTeamData (for debugging purposes)
+            console.log('Updated secondTeamData:', secondTeamData);
+        }
+
+        
+        
+        // Fetch data for the first team
+        $.ajax({
+            type: "GET",
+            url: "phpFile/buttonFunctions/fetchAthleteTotal.php",
+            data: {game_number: gameNumber},
+            dataType: 'json',
+            success: function(response) {
+                if (response.status === 'success') {
+                    var athletesNewData = response.data;
+        
+                    // Fetch data for the second team
+                    $.ajax({
+                        type: "GET",
+                        url: "phpFile/buttonFunctions/fetchPercentage.php",
+                        data: {game_number: gameNumber},
+                        dataType: 'json',
+                        success: function(response) {
+                            if (response.status === 'success') {
+                                var athletesOldData = response.data;
+        
+                                // Now you have both athletesNewData and athletesOldData
+                                // Process or use the data as needed
+                                console.log('Athletes New Data:', athletesNewData);
+                                console.log('Athletes Old Data:', athletesOldData);
+        
+                                // Example: Update UI or call a function with both datasets
+                                updateAthleteInfoPercent(athletesNewData, athletesOldData);
                             } else {
                                 console.error('Error fetching second team data:', response.message);
                             }
